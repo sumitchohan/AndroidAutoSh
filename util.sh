@@ -70,7 +70,39 @@ Record()
     kill $PIDDD  
     PreparePlayCommand $1
 }
+
 PreparePlayCommand() 
+{ 
+    gesture="gesture$1"
+    recFileSize=$(stat /sdcard/rec1 | grep Size: | tr ' ' '\n' | grep Size -A1 | tail -n 1)
+    recLineCounts=$((recFileSize/16))
+    recLineIndex=0
+    gesturePartIndex=0
+    startBytes=$(dd if=/sdcard/rec1  ibs=1 skip=0 count=1 | od)  
+    offset=0 
+    echo "delay=\${1:-0.1}" > /sdcard/$gesture
+    while [ $recLineIndex -lt $recLineCounts ]
+    do
+        skip=$((recLineIndex*16))
+        startBytesThis=$(dd if=/sdcard/rec1  ibs=1 skip=$skip count=1 | od)   
+        if [ ! "$startBytesThis" = "$startBytes" ] || [ $recLineIndex = $((recLineCounts-1)) ]
+        then    
+            count=$((skip-offset))
+            if [ $recLineIndex = $((recLineCounts-1)) ] 
+            then
+                count=$((count+16))
+            fi
+            dd if=/sdcard/rec1 of=/sdcard/$gesture$gesturePartIndex.rec ibs=1 skip=$offset count=$count
+            echo "dd if=/sdcard/$gesture$gesturePartIndex.rec of=/dev/input/event1">>/sdcard/$gesture
+            echo "sleep \$delay">>/sdcard/$gesture
+            gesturePartIndex=$((gesturePartIndex+1))
+            offset=$skip
+            startBytes=$startBytesThis
+        fi
+        recLineIndex=$((recLineIndex + 1))
+    done
+}
+PreparePlayCommand1() 
 {
     gesture="gesture$1"
     s=0
@@ -104,18 +136,24 @@ PreparePlayCommand()
             ms_d=$((ms1-ms))
             ms_d_k=$((ms_d/1000))
             time_diff=$((s_d*1000+ms_d_k))
-            echo "sleep $((time_diff/1000)).$((time_diff%1000))"
-            echo "sleep $((time_diff/1000)).$((time_diff%1000))">>/sdcard/$gesture
+            if [ $time_diff -ge 400 ] && [ $time_diff -le 100000 ]
+            then
+                echo "sleep $((time_diff/1000)).$((time_diff%1000))"
+                echo "sleep $((time_diff/1000)).$((time_diff%1000))">>/sdcard/$gesture
+            fi
 
         fi  
-        dd if=/sdcard/rec1 of=/sdcard/$gesture$gesturePartIndex.rec ibs=1 skip=$size count=$size_d
-        echo "dd if=/sdcard/$gesture$gesturePartIndex.rec of=/dev/input/event1">>/sdcard/$gesture
-
-        echo "bytes -  $size_d"
-        s=$s1
-        ms=$ms1
-        size=$size1
-        gesturePartIndex=$((gesturePartIndex+1))
+        if [ $time_diff -ge 400 ]
+        then 
+            echo "dd if=/sdcard/rec1 of=/sdcard/$gesture$gesturePartIndex.rec ibs=1 skip=$size count=$size_d"
+            dd if=/sdcard/rec1 of=/sdcard/$gesture$gesturePartIndex.rec ibs=1 skip=$size count=$size_d
+            echo "dd if=/sdcard/$gesture$gesturePartIndex.rec of=/dev/input/event1">>/sdcard/$gesture
+            echo "bytes -  $size_d"
+            s=$s1
+            ms=$ms1
+            size=$size1
+            gesturePartIndex=$((gesturePartIndex+1))
+        fi
 	
     done < /sdcard/recsize1
 
