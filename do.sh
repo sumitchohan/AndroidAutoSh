@@ -11,19 +11,22 @@ Dump()
 }  
 Log()
 {
-	 echo "$(date) $1" >>/sdcard/coc/logs_$(date +%Y%m%d).txt
+	 echo "$(date) $1" #>>/sdcard/coc/logs_$(date +%Y%m%d).txt
 	 #echo "$(date) $1"
 }
 
 Log1()
 {
-	 echo "$(date) $1" >>/sdcard/coc/logs1_$(date +%Y%m%d).txt
+	 echo "$(date) $1" #>>/sdcard/coc/logs1_$(date +%Y%m%d).txt
 	 #echo "$(date) $1"
 }
 
 Tap()
 {
-	input tap $1 $2
+	temp=$1
+	temp1=$((800-$1))
+	
+	input tap $2 $temp1
 	#Tapf $1 $2
 }
 Swipe()
@@ -315,26 +318,24 @@ Loose()
 		fi
 	fi
 }
+
+
+WaitForFile()
+{ 
+    while [ ! -f $1 ]; do 
+        sleep 1; 
+    done
+}
+
 Read()
 {
-	SendMessage "read $1"
-# 	if [ -e "ocr_coca_$1.request" ]
-# 	then
-# 		rm "ocr_coca_$1.request"
-# 	fi
-# 	echo "request">"ocr_coca_$1.request"
-# 	wc=1
-# 	while [ $wc -le 30 ]
-# 	do
-# 		if [ -e "ocr_coca_$1.request" ]
-# 		then
-# 			sleep 1
-# 		else
-# 			break
-# 		fi
-# 		(( wc++ ))
-	# done
+	screencap -p /sdcard/coc/scr.PNG
+    rm /sdcard/coc/doneflag
+    am startservice -n com.example.sumitchohan.utilityapp/.MyIntentService --es action READ_IMAGE --es imagePath /sdcard/coc/scr.PNG --es configPath /sdcard/coc/$1.config --es completedFilePath /sdcard/coc/doneflag
+    WaitForFile /sdcard/coc/doneflag
 }
+
+
 SkipVersusHome()
 {
 	Act "Home" "Zoom"
@@ -456,35 +457,10 @@ VersusAttack()
 
 Zoom()
 {
-	
-	FRep
-	sleep 5
-	# X:16;Y:95 ;R:14 ;G:194;B:129;A:255
-# X:10;Y:95 ;R:14 ;G:194;B:129;A:255
-# X:10;Y:95 ;R:252 ;G:0;B:11;A:255
- 
- # 13 92
- 
- 
-	#Act "FRep" "Zoom"
-	#found=$(WaitFor "Frep" "" 10)
-	#if [ "$found" = "n" ]
-	#then
-	#	Log "Frep not found. Activating it..."
-	#	am start -n com.x0.strai.frep/.FingerActivity
-	#	sleep 3
-	#fi
-	#Act "Frep" "Play"
-	#sleep 1
-	#found=$(WaitFor "Frep" "" 10)
-	#if [ "$found" = "n" ]
-	#then
-	#	Log "Frep not found. Activating it..."
-	#	am start -n com.x0.strai.frep/.FingerActivity
-	#	sleep 3
-	#	am start -n com.supercell.clashofclans/.GameApp
-	#	sleep 3
-	#fi
+	 source zoomout
+	 source zoomout
+	 source pulltopleft
+	 source pulltopleft
 }
 StartCOC()
 {
@@ -973,7 +949,7 @@ Tapf()
 }
 LogRemote()
 {	
-	SendMessage "logremote.sh $1"
+	Log1 $1
 }
 DeployStart()
 {
@@ -1040,9 +1016,11 @@ MatchPixel() #x y r g b delta
   #gh=$(echo $pix | cut -c3-4)
   #bh=$(echo $pix | cut -c5-6)
 
-  rh=$(echo $pix | dd ibs=1 skip=0 count=2)
-  gh=$(echo $pix | dd ibs=1 skip=2 count=2)
-  bh=$(echo $pix | dd ibs=1 skip=4 count=2)
+
+
+  rh=$(Mid $pix 0 2)
+	gh=$(Mid $pix 2 2)
+  bh=$(Mid $pix 4 2)
   r=$((16#$rh))
   g=$((16#$gh))
   b=$((16#$bh))
@@ -1060,7 +1038,7 @@ MatchPixel() #x y r g b delta
 IsReadyForAttack()
 {
 	Dump	
-    if [ $(MatchPixel 27 150 64 119 10 100) = "y" ] #&& [ $(MatchPixel 551 296 64 117 09 100) = "y" ]
+    if [ $(MatchPixel 631 143 64 116 09 100) = "y" ] #&& [ $(MatchPixel 551 296 64 117 09 100) = "y" ]
     then		
 		echo "y"
 	else 
@@ -1191,12 +1169,12 @@ Run()
 	Log1 "Reached Home"	
 	#SwitchID $1 
 	#Loose $1
-	quickTrainXPos=520
+	quickTrainYPos=805
 	if [ "$1" = "2" ]
 	then
-		quickTrainXPos=730
+		quickTrainYPos=997
 	fi
-	Tap 40 520
+	Tap 180 50
 	sleep 0.5
 	
 	Log1 "IsReadyForAttack $1 .. taking snapshot"	
@@ -1205,29 +1183,29 @@ Run()
 	LogRemote "$1_Ready - $ready"
 	if [ "$ready" = "y" ]
 	then
-		Tap $quickTrainXPos 95
+		Tap 697 $quickTrainYPos
 		sleep 0.5
-		Tap 730 448
-		Tap 768 92
-		Attack $1
+		Tap 410 1085
+		Tap 700 1130
+		#Attack $1
 		sleep 60
 		StopCOC
 		Home
 		Zoom
-		Tap 40 520
+		Tap 180 50
 		sleep 0.5
-		Tap $quickTrainXPos 95
+		Tap 697 $quickTrainYPos
 		sleep 0.5
-		Tap 730 448
+		Tap 700 1130
 		sleep 1
 	else
 		echo "not ready"	
 		Log1 "Not Ready $1 .. taking snapshot"	
-		#SendMessage "snapshot.sh"		
-		Tap $quickTrainXPos 95
+		#SendMessage "snapshot.sh"
+		Tap 697 $quickTrainYPos
 		sleep 0.5
-		Tap 730 448
-		Tap 768 92
+		Tap 410 1085
+		Tap 700 1130
 	fi
 	LogRemote "$1_Done"
 }
