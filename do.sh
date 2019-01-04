@@ -30,7 +30,12 @@ Swipe()
 {
 
 }
-
+Mid()
+{
+    echo "$1" > /sdcard/input
+    substringZ=$(dd if=/sdcard/input ibs=1 skip=$2 count=$3 2> /sdcard/results)
+    echo $substringZ
+}
 Pixel()
 { 
 	IFS=" "
@@ -89,9 +94,9 @@ ProcessStateActionInternal()
 			#gh=$(echo $pix | cut -c3-4)
 			#bh=$(echo $pix | cut -c5-6)
 
-			rh=$(echo $pix | dd ibs=1 skip=0 count=2)
-			gh=$(echo $pix | dd ibs=2 skip=2 count=2)
-			bh=$(echo $pix | dd ibs=1 skip=4 count=2)
+			rh=$(Mid $pix 0 2)
+			gh=$(Mid $pix 2 2)
+			bh=$(Mid $pix 4 2)
 			r=$((16#$rh))
 			g=$((16#$gh))
 			b=$((16#$bh))
