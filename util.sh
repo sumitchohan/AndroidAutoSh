@@ -17,9 +17,9 @@ WaitForFile()
 
 Read()
 {
-    rm /sdcard/auto/doneflag
-    am startservice -n com.example.sumitchohan.utilityapp/.MyIntentService --es action READ_IMAGE --es imagePath /sdcard/auto/scr.PNG --es configPath /sdcard/auto/$1.config --es completedFilePath /sdcard/auto/doneflag
-    WaitForFile /sdcard/auto/doneflag
+    rm /sdcard/coc/doneflag
+    am startservice -n com.example.sumitchohan.utilityapp/.MyIntentService --es action READ_IMAGE --es imagePath /sdcard/coc/scr.PNG --es configPath /sdcard/coc/$1.config --es completedFilePath /sdcard/coc/doneflag
+    WaitForFile /sdcard/coc/doneflag
 }
 
 GetKeyValue()
@@ -31,8 +31,11 @@ GetKeyValue()
  
 
 GetFileSize()
-{
-	echo $(stat $1 | grep Size: | tr ' ' '\n' | grep Size -A1 | tail -n 1)
+{ 
+    rm /sdcard/coc/doneflag
+    am startservice -n com.example.sumitchohan.utilityapp/.MyIntentService --es action FILE_SIZE --es filepath $1 --es completedFilePath /sdcard/coc/doneflag --es outFilePath /sdcard/coc/filesize
+    WaitForFile /sdcard/coc/doneflag
+    filesize=$(cat /sdcard/coc/filesize)
 }
 
 CaptureFileSize()
@@ -54,47 +57,167 @@ CaptureFileSize()
 }
 
 
+inputCommandByteSize=24
 Record()
 {   
     echo "" >/sdcard/recsize1
     echo "" >/sdcard/rec1
     rm /sdcard/rec1
     touch /sdcard/rec1
-    CaptureFileSize /sdcard/rec1 /sdcard/recsize1  & PIDCAP=$!
+    #CaptureFileSize /sdcard/rec1 /sdcard/recsize1  & PIDCAP=$!
     echo $PIDCAP
-    dd if=/dev/input/event1 of=/sdcard/rec1 bs=16 & PIDDD=$!
+    dd if=/dev/input/event3 of=/sdcard/rec1 bs=$inputCommandByteSize & PIDDD=$!
     echo $PIDDD
     echo "Recording.. Hit enter twice to stop"
     read
-    kill $PIDCAP  
+    #kill $PIDCAP  
     kill $PIDDD  
-    PreparePlayCommand $1
+    PreparePlayCommand4 $1
 }
+
 
 PreparePlayCommand() 
 { 
     gesture="gesture$1"
-    recFileSize=$(stat /sdcard/rec1 | grep Size: | tr ' ' '\n' | grep Size -A1 | tail -n 1)
-    recLineCounts=$((recFileSize/16))
+    GetFileSize /sdcard/rec1 
+    recFileSize=$filesize
+    recLineCounts=$((recFileSize/$inputCommandByteSize))
     recLineIndex=0
     gesturePartIndex=0
-    startBytes=$(dd if=/sdcard/rec1  ibs=1 skip=0 count=1 | od)  
+    startBytes=$(dd if=/sdcard/rec1  ibs=1 skip=0 count=1 | hd)  
     offset=0 
-    echo "delay=\${1:-0.1}" > /sdcard/$gesture
+    touch /sdcard/$gesture
+    #echo "delay=\${1:-0.1}" > /sdcard/$gesture
     while [ $recLineIndex -lt $recLineCounts ]
     do
-        skip=$((recLineIndex*16))
-        startBytesThis=$(dd if=/sdcard/rec1  ibs=1 skip=$skip count=1 | od)   
+        skip=$((recLineIndex*inputCommandByteSize))
+        startBytesThis=$(dd if=/sdcard/rec1  ibs=1 skip=$skip count=1 | hd)   
         if [ ! "$startBytesThis" = "$startBytes" ] || [ $recLineIndex = $((recLineCounts-1)) ]
         then    
             count=$((skip-offset))
             if [ $recLineIndex = $((recLineCounts-1)) ] 
             then
-                count=$((count+16))
+                count=$((count+inputCommandByteSize))
             fi
             dd if=/sdcard/rec1 of=/sdcard/$gesture$gesturePartIndex.rec ibs=1 skip=$offset count=$count
-            echo "dd if=/sdcard/$gesture$gesturePartIndex.rec of=/dev/input/event1">>/sdcard/$gesture
-            echo "sleep \$delay">>/sdcard/$gesture
+            echo "dd if=/sdcard/$gesture$gesturePartIndex.rec of=/dev/input/event3">>/sdcard/$gesture
+            echo "sleep 0.001">>/sdcard/$gesture
+            gesturePartIndex=$((gesturePartIndex+1))
+            offset=$skip
+            startBytes=$startBytesThis
+        fi
+        recLineIndex=$((recLineIndex + 1))
+    done
+}
+
+
+PreparePlayCommand4() 
+{ 
+    gesture="gesture$1"
+    GetFileSize /sdcard/rec1 
+    recFileSize=$filesize
+    recLineCounts=$((recFileSize/$inputCommandByteSize))
+    recLineIndex=0
+    gesturePartIndex=0
+    seperator1=$(dd if=coc/seperator ibs=1 skip=20 count=4| hd)  
+    seperator2=$(dd if=coc/seperator ibs=1 skip=35 count=13| hd)  
+    offset=0 
+    echo "" >  /sdcard/$gesture
+    rm /sdcard/$gesture
+    touch /sdcard/$gesture
+    previousseperator=""
+    #echo "delay=\${1:-0.1}" > /sdcard/$gesture
+    while [ $recLineIndex -lt $recLineCounts ]
+    do
+        skip=$((recLineIndex*inputCommandByteSize))
+        endBytes=$(dd if=/sdcard/rec1  ibs=1 skip=$((skip+inputCommandByteSize-13)) count=13 | hd)   
+
+        echo "seperator-$seperator ; endBytes - $endBytes"
+        if [ "$seperator2" = "$endBytes" ] && [ "$seperator1" = "$previousseperator" ]
+        then    
+            echo "same"
+            count=$((skip+inputCommandByteSize -offset))
+            dd if=/sdcard/rec1 of=/sdcard/$gesture$gesturePartIndex.rec ibs=1 skip=$offset count=$count
+            echo "dd if=/sdcard/$gesture$gesturePartIndex.rec of=/dev/input/event3">>/sdcard/$gesture
+            #echo "sleep 0.001">>/sdcard/$gesture
+            gesturePartIndex=$((gesturePartIndex+1))
+            offset=$skip
+            startBytes=$startBytesThis
+        else
+            echo "not same"
+        fi
+        previousseperator=$(dd if=/sdcard/rec1  ibs=1 skip=$((skip+inputCommandByteSize-4)) count=4 | hd)  
+        recLineIndex=$((recLineIndex + 1))
+    done
+}
+
+
+
+
+PreparePlayCommand5() 
+{ 
+    gesture="gesture$1"
+    GetFileSize /sdcard/rec1 
+    recFileSize=$filesize
+    recLineCounts=$((recFileSize/$inputCommandByteSize))
+    recLineIndex=0
+    gesturePartIndex=0
+    seperator1=$(dd if=coc/seperator ibs=1 skip=20 count=4| hd)  
+    seperator2=$(dd if=coc/seperator ibs=1 skip=35 count=13| hd)  
+    offset=0 
+    echo "" >  /sdcard/$gesture
+    rm /sdcard/$gesture
+    touch /sdcard/$gesture
+    previousseperator=""
+    #echo "delay=\${1:-0.1}" > /sdcard/$gesture
+    while [ $recLineIndex -lt $recLineCounts ]
+    do
+        skip=$((recLineIndex*inputCommandByteSize))
+        endBytes=$(dd if=/sdcard/rec1  ibs=1 skip=$((skip+inputCommandByteSize-13)) count=13 | hd)   
+
+        echo "seperator-$seperator ; endBytes - $endBytes"
+        if [ "$seperator2" = "$endBytes" ] #&& [ "$seperator1" = "$previousseperator" ]
+        then    
+            echo "same"
+            count=$((skip+inputCommandByteSize -offset))
+            dd if=/sdcard/rec1 of=/sdcard/$gesture$gesturePartIndex.rec ibs=1 skip=$offset count=$count
+            echo "dd if=/sdcard/$gesture$gesturePartIndex.rec of=/dev/input/event3">>/sdcard/$gesture
+            #echo "sleep 0.001">>/sdcard/$gesture
+            gesturePartIndex=$((gesturePartIndex+1))
+            offset=$skip
+            startBytes=$startBytesThis
+        else
+            echo "not same"
+        fi
+        #previousseperator=$(dd if=/sdcard/rec1  ibs=1 skip=$((skip+inputCommandByteSize-4)) count=4 | hd)  
+        recLineIndex=$((recLineIndex + 1))
+    done
+}
+
+
+PreparePlayCommand3() 
+{ 
+    gesture="gesturecc"
+    recFileSize=$(stat /sdcard/rec1 | grep Size: | tr ' ' '\n' | grep Size -A1 | tail -n 1)
+    recLineCounts=$((recFileSize/$inputCommandByteSize))
+    recLineIndex=0
+    gesturePartIndex=0
+    startBytes=$(dd if=/sdcard/rec1  ibs=1 skip=0 count=1 | od)  
+    offset=0 
+    echo "" > /sdcard/$gesture
+    while [ $recLineIndex -lt $recLineCounts ]
+    do
+        skip=$((recLineIndex*inputCommandByteSize))
+        startBytesThis=$(dd if=/sdcard/rec1  ibs=1 skip=$skip count=1 | od)   
+        if [ "a" = "a" ] || [ $recLineIndex = $((recLineCounts-1)) ]
+        then    
+            count=$((skip-offset))
+            if [ $recLineIndex = $((recLineCounts-1)) ] 
+            then
+                count=$((count+inputCommandByteSize))
+            fi
+            dd if=/sdcard/rec1 of=/sdcard/$gesture$gesturePartIndex.rec ibs=1 skip=$offset count=$count
+            echo "dd if=/sdcard/$gesture$gesturePartIndex.rec of=/dev/input/event1">>/sdcard/$gesture 
             gesturePartIndex=$((gesturePartIndex+1))
             offset=$skip
             startBytes=$startBytesThis
@@ -163,3 +286,19 @@ Play()
     gesture="gesture$1"
     source /sdcard/$gesture
 }
+
+Mid()
+{
+    substringZ=$(echo $1 | dd ibs=1 skip=$2 count=$3)
+    echo $substringZ
+}
+
+screenwidth=800
+Foo()
+{
+    offset=$((screenwidth*$2+$1+3))
+	dumpFile='/sdcard/coc/scr.dump'
+	stringZ=$(dd if=$dumpFile bs=4 count=1 skip=$offset 2>/sdcard/result.txt| hd | grep " ")
+    echo "$stringZ"
+}
+

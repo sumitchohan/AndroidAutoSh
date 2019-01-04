@@ -1,11 +1,12 @@
 cd /sdcard/coc
-screenWidth="$(wm size | cut -d'x' -f 1 | cut -d':' -f 2 |sed -e 's/^[[:space:]]*//')"
+#screenWidth="$(wm size | cut -d'x' -f 1 | cut -d':' -f 2 |sed -e 's/^[[:space:]]*//')"
+screenwidth=800
 Dump()
 {
-	screenWidth="$(wm size | cut -d'x' -f 1 | cut -d':' -f 2 |sed -e 's/^[[:space:]]*//')"
+	#screenWidth="$(wm size | cut -d'x' -f 1 | cut -d':' -f 2 |sed -e 's/^[[:space:]]*//')"
 	echo "$screenWidth">/sdcard/coc/screenwidth.dat
 	screencap /sdcard/coc/scr.dump
-	split -b 640000 scr.dump
+	#split -b 640000 scr.dump
 
 }  
 Log()
@@ -29,138 +30,24 @@ Swipe()
 {
 
 }
+
 Pixel()
-{
-	#IFS=" "
-	#let offset=$screenWidth*$2+$1+3
-	#stringZ=$(dd if='/sdcard/coc/scr.dump' bs=4 count=1 skip=$offset 2>/dev/null | hd)
-	#echo "$(echo $stringZ | grep ":" | cut -d' ' -f 2)$(echo $stringZ | grep ":" | cut -d' ' -f 3)$(echo $stringZ | grep ":" | cut -d' ' -f 4)"
-
-
+{ 
 	IFS=" "
-	#offset=$screenWidth*$2+$1+3
-	#dumpFile='/sdcard/coc/scr.dump'
-	offset1=$(($screenWidth*$2+$1+3))
-	offset=$(($offset1%160000))	
-	offsetNew=$((($offset1-$offset)/160000))
-	dumpFile="xaa"
-	if [ "$offsetNew" = "1" ]
-	then
-		dumpFile="xab"
-	fi
-	if [ "$offsetNew" = "2" ]
-	then
-		dumpFile="xac"
-	fi
-	if [ "$offsetNew" = "3" ]
-	then
-		dumpFile="xad"
-	fi
-	if [ "$offsetNew" = "4" ]
-	then
-		dumpFile="xae"
-	fi
-	if [ "$offsetNew" = "5" ]
-	then
-		dumpFile="xaf"
-	fi
-	if [ "$offsetNew" = "6" ]
-	then
-		dumpFile="xag"
-	fi
-	if [ "$offsetNew" = "7" ]
-	then
-		dumpFile="xah"
-	fi
-	if [ "$offsetNew" = "8" ]
-	then
-		dumpFile="xai"
-	fi
-	if [ "$offsetNew" = "9" ]
-	then
-		dumpFile="xaj"
-	fi
-	if [ "$offsetNew" = "10" ]
-	then
-		dumpFile="xak"
-	fi
-	if [ "$offsetNew" = "11" ]
-	then
-		dumpFile="xal"
-	fi
-	if [ "$offsetNew" = "12" ]
-	then
-		dumpFile="xam"
-	fi
-	if [ "$offsetNew" = "13" ]
-	then
-		dumpFile="xan"
-	fi
-	if [ "$offsetNew" = "14" ]
-	then
-		dumpFile="xao"
-	fi
-	if [ "$offsetNew" = "15" ]
-	then
-		dumpFile="xap"
-	fi
-	if [ "$offsetNew" = "16" ]
-	then
-		dumpFile="xaq"
-	fi
-	if [ "$offsetNew" = "17" ]
-	then
-		dumpFile="xar"
-	fi
-	if [ "$offsetNew" = "18" ]
-	then
-		dumpFile="xas"
-	fi
-	if [ "$offsetNew" = "19" ]
-	then
-		dumpFile="xat"
-	fi
-	if [ "$offsetNew" = "20" ]
-	then
-		dumpFile="xau"
-	fi
-	if [ "$offsetNew" = "21" ]
-	then
-		dumpFile="xav"
-	fi
-	if [ "$offsetNew" = "22" ]
-	then
-		dumpFile="xaw"
-	fi
-	if [ "$offsetNew" = "23" ]
-	then
-		dumpFile="xax"
-	fi
-	if [ "$offsetNew" = "24" ]
-	then
-		dumpFile="xay"
-	fi
-	if [ "$offsetNew" = "25" ]
-	then
-		dumpFile="xaz"
-	fi
-	
-	stringZ=$(dd if=$dumpFile bs=4 count=1 skip=$offset 2>/sdcard/result.txt| od | grep " ");
-	pixelParts[1]=""
+    offset=$((screenwidth*$2+$1+3))
+	dumpFile='/sdcard/coc/scr.dump'
+	stringZ=$(dd if=$dumpFile bs=4 count=1 skip=$offset 2>/sdcard/result.txt| hd | grep " ")
+    pixelParts[1]=""
 	pixelParts[2]=""
 	pixelPartsIndex=0
 	for word in $stringZ
 	do
 		pixelParts[pixelPartsIndex]=$word
 		pixelPartsIndex=$pixelPartsIndex+1
-	done
-	part1d=$((8#${pixelParts[1]}))
-	typeset -i16 part1h=part1d
-	part2d=$((8#${pixelParts[2]}))
-	typeset -i16 part2h=part2d
-	red=$(echo $part1h | cut -c6-7)
-	green=$(echo $part1h | cut -c4-5)
-	blue=$(echo $part2h | cut -c6-7)
+	done 
+    red=${pixelParts[1]}
+    green=${pixelParts[2]}
+    blue=${pixelParts[3]}
 	if [ "${#red}" = "1" ]
 	then
 		red="0$red"
@@ -198,9 +85,13 @@ ProcessStateActionInternal()
 			IFS=","
 			set -A pixelDetails $pixelData
 			pix=$(Pixel ${pixelDetails[1]} ${pixelDetails[2]})
-			rh=$(echo $pix | cut -c1-2)
-			gh=$(echo $pix | cut -c3-4)
-			bh=$(echo $pix | cut -c5-6)
+			#rh=$(echo $pix | cut -c1-2)
+			#gh=$(echo $pix | cut -c3-4)
+			#bh=$(echo $pix | cut -c5-6)
+
+			rh=$(echo $pix | dd ibs=1 skip=0 count=2)
+			gh=$(echo $pix | dd ibs=2 skip=2 count=2)
+			bh=$(echo $pix | dd ibs=1 skip=4 count=2)
 			r=$((16#$rh))
 			g=$((16#$gh))
 			b=$((16#$bh))
@@ -852,7 +743,7 @@ Attack()
 				win=$(cat ocred_Win.txt)
 				loose=$(cat ocred_Loose.txt) 
 				th10=$(cat ocred_Th10.txt) 
-				isth10=$(echo $th10| cut -d'_' -f 1)
+				#isth10=$(echo $th10| cut -d'_' -f 1)
 				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
 			else				
 				echo "player in league, skipping"
@@ -939,7 +830,7 @@ Attack()
 				win=$(cat ocred_Win.txt)
 				loose=$(cat ocred_Loose.txt) 
 				th10=$(cat ocred_Th10.txt) 
-				isth10=$(echo $th10| cut -d'_' -f 1)
+				#isth10=$(echo $th10| cut -d'_' -f 1)
 				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
 			else				
 				echo "player in league, skipping"
@@ -1057,7 +948,7 @@ CaptureZoomEvents()
 	sleep 4
 	kill $PID1
 }
-touchDevice=$(getevent -pl 2>&1 | sed -n '/^add/{h}/ABS_MT_TOUCH/{x;s/[^/]*//p}')
+#touchDevice=$(getevent -pl 2>&1 | sed -n '/^add/{h}/ABS_MT_TOUCH/{x;s/[^/]*//p}')
 Tapf()
 {
 	SendMessage "tap.sh $1 $2"
@@ -1140,9 +1031,13 @@ Diff()
 MatchPixel() #x y r g b delta
 {
   pix=$(Pixel $1 $2)
-  rh=$(echo $pix | cut -c1-2)
-  gh=$(echo $pix | cut -c3-4)
-  bh=$(echo $pix | cut -c5-6)
+  #rh=$(echo $pix | cut -c1-2)
+  #gh=$(echo $pix | cut -c3-4)
+  #bh=$(echo $pix | cut -c5-6)
+
+  rh=$(echo $pix | dd ibs=1 skip=0 count=2)
+  gh=$(echo $pix | dd ibs=1 skip=2 count=2)
+  bh=$(echo $pix | dd ibs=1 skip=4 count=2)
   r=$((16#$rh))
   g=$((16#$gh))
   b=$((16#$bh))
