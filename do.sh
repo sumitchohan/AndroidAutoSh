@@ -11,13 +11,13 @@ Dump()
 }  
 Log()
 {
-	 echo "$(date) $1" #>>/sdcard/coc/logs_$(date +%Y%m%d).txt
+	 echo "$(date) $1" >>/sdcard/coc/logs_$(date +%Y%m%d).txt
 	 #echo "$(date) $1"
 }
 
 Log1()
 {
-	 echo "$(date) $1" #>>/sdcard/coc/logs1_$(date +%Y%m%d).txt
+	 echo "$(date) $1" >>/sdcard/coc/logs1_$(date +%Y%m%d).txt
 	 #echo "$(date) $1"
 }
 
@@ -32,6 +32,10 @@ Tap()
 Swipe()
 {
 
+}
+SendMessage()
+{
+	echo "SendMessage - $1"
 }
 Mid()
 {
@@ -457,10 +461,10 @@ VersusAttack()
 
 Zoom()
 {
-	 source zoomout
-	 source zoomout
-	 source pulltopleft
-	 source pulltopleft
+	 source /sdcard/coc/zoomout
+	 source /sdcard/coc/zoomout
+	 source /sdcard/coc/pulltopleft
+	 source /sdcard/coc/pulltopleft
 }
 StartCOC()
 {
@@ -667,7 +671,7 @@ ShouldAttack()
 	result="n"
 	if [ "$1" = "1" ]
 	then
-		if  [ "$elixir" -ge "500000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "5000" ]
+		if  [ "$elixir" -ge "500000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "4500" ]
 		then
 			result="y"
 		fi 
@@ -687,37 +691,27 @@ ShouldAttack()
 Attack()
 {
 	Log1 "Attack Start $1"
-	Act "Home" "Attack"
+	Tap 80 50
 	sleep .5
 	#WaitFor "FindAMatch" "" 20
 	#Act "FindAMatch" "Find"
-	Tap 230 460
-
+	Tap 178 257
 	battleFound=$(WaitFor "Battle" "" 20)
 	if [ "$battleFound" = "y" ]
 	then
 		#Zoom		
 		Log1 "Battle Found $1"
-		# if [ "$1" = "1" ]
-		# then
-		# 	Log1 "Reading Battle $1"
-		# 	SendMessage "read Battle"			
-		# 	de=$(cat ocred_DE.txt)
-		# 	elixir=$(cat ocred_Elixir.txt)
-		# 	gold=$(cat ocred_Gold.txt) 
-		# 	win=$(cat ocred_Win.txt)
-		# 	loose=$(cat ocred_Loose.txt) 
-		# 	th10=$(cat ocred_Th10.txt) 
-		# 	isth10=$(echo $th10| cut -d'_' -f 1)
-		# 	Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
-		# else
+		attacked="n"
+		while [ "$attacked" = "n" ]
+		do
+
 			Log1 "Reading Battle $1"
-			if [ $(MatchPixel 22 25 93 95 96 100) = "y" ] && [ $(MatchPixel 32 25 93 95 96 100) = "y" ] 
+			if [ $(MatchPixel 774 33 93 95 97 100) = "y" ] && [ $(MatchPixel 774 35 93 95 97 100) = "y" ] 
 			then
 				echo "player not in league"
 				Log1 "Player not in league"
 				playernotinleague="y"
-				SendMessage "read Battle1"				
+				Read "Battle"			
 				de=$(cat ocred_DE.txt)
 				elixir=$(cat ocred_Elixir.txt)
 				gold=$(cat ocred_Gold.txt) 
@@ -738,18 +732,6 @@ Attack()
 				isth10="n"
 				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
 			fi
-		#fi 
-		#th9=$(cat ocred_Th9.txt) 
-		#isth9=$(echo $th9| cut -d'_' -f 1)
-		# th9=$(cat ocred_Th9.txt) 
-		# isth9=$(echo $th9| cut -d'_' -f 1)
-		attacked="n"
-		eg=0
-		((eg=gold+elixir))
-		Log "loot - de $de elixir $elixir gold $gold eg $eg"
-		echo "loot - de $de elixir $elixir gold $gold eg $eg win $win loose $loose th9 - $th9 th10 - $th10"
-		while [ "$attacked" = "n" ]
-		do
 			#SendMessage "snapshot.sh"
 			shouldAttack=$(ShouldAttack $1)
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
@@ -757,82 +739,26 @@ Attack()
 			if [ "$shouldAttack" = "y" ] 
 			then
 				Zoom
+				Zoom
 				Log "attacking on th10"
 				echo "ready to attack"
 				Log1 "Attacking"
-				if [ "$1" = "1" ]
-				then
-					#QuickAttack
-					
-					LoonArchAttack
-				else
-					#QuickAttack
-					#GiantArchAttack
-					#LoonMinionAttack
-					LoonArchAttack
-
-
-				fi 
-		
-
+				QuickAttack $1
 				break
 			fi 
 			Log "not attacking"
 			echo "not attacking"
-			Act "Battle" "Next"
+			#Act "Battle" "Next"
+			Tap 200 1185
 			battleFound=$(WaitFor "Battle" "" 100)
 			if [ "$battleFound" = "n" ]
 			then
 				break
-			fi
-			#Zoom
-		# 	if [ "$1" = "1" ]
-		# then
-		# 	SendMessage "read Battle"			
-		# 	de=$(cat ocred_DE.txt)
-		# 	elixir=$(cat ocred_Elixir.txt)
-		# 	gold=$(cat ocred_Gold.txt) 
-		# 	win=$(cat ocred_Win.txt)
-		# 	loose=$(cat ocred_Loose.txt) 
-		# 	th10=$(cat ocred_Th10.txt) 
-		# 	isth10=$(echo $th10| cut -d'_' -f 1)
-		# 	Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
-
-		# else
-			if [ $(MatchPixel 22 25 93 95 96 100) = "y" ] && [ $(MatchPixel 32 25 93 95 96 100) = "y" ] 
-			then
-				echo "player not in league"
-				Log1 "Player not in league"
-				playernotinleague="y"
-				SendMessage "read Battle1"				
-				de=$(cat ocred_DE.txt)
-				elixir=$(cat ocred_Elixir.txt)
-				gold=$(cat ocred_Gold.txt) 
-				win=$(cat ocred_Win.txt)
-				loose=$(cat ocred_Loose.txt) 
-				th10=$(cat ocred_Th10.txt) 
-				#isth10=$(echo $th10| cut -d'_' -f 1)
-				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
-			else				
-				echo "player in league, skipping"
-				Log1 "Player in league, skipping"
-				de=0
-				elixir=0
-				gold=0
-				win=0
-				loose=0
-				th10="n"
-				isth10="n"
-				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
-			fi
-		# fi 		
-			#th9=$(cat ocred_Th9.txt) 
-			#isth9=$(echo $th9| cut -d'_' -f 1)
+			fi 
 			Log "loot - de $de elixir $elixir gold $gold eg $eg"
 			echo "loot - de $de elixir $elixir gold $gold eg $eg win $win loose $loose th10 - $th10"			
 		done
 	else
-		
 		Log1 "Battle Not Found $1 .. taking snapshot"
 		SendMessage "snapshot.sh"
 		Home
@@ -1114,7 +1040,12 @@ GetDonationWindowBorderPoints()
 
 QuickAttack()
 {
-	SendMessage 'quick_attack'
+	if [ "$1" = "2" ]
+	then
+		source quick_attack_2
+	else
+		source quick_attack_1
+	fi
 }
 
 GiantArchAttack()
@@ -1159,6 +1090,7 @@ Run()
 {
 	LogRemote "$1_Starting"
 	Log1 "Starting Run.. $1" 
+	Init
 	StopCOC
 	#am start -n com.x0.strai.frep/.FingerActivity
 	StartCOC	
@@ -1187,7 +1119,7 @@ Run()
 		sleep 0.5
 		Tap 410 1085
 		Tap 700 1130
-		#Attack $1
+		Attack $1
 		sleep 60
 		StopCOC
 		Home
@@ -1208,4 +1140,70 @@ Run()
 		Tap 700 1130
 	fi
 	LogRemote "$1_Done"
+}
+
+Init()
+{
+	Dump
+	isScreenOff=$(MatchPixel 100 100 0 0 0 1)
+	if [ "$isScreenOff" = "y" ]
+	then
+		input keyevent 26
+	fi 
+	input keyevent 3 
+	input swipe 400 750 400 350 
+	input keyevent 3 
+
+}
+
+
+Touch()
+{
+    dd if=/sdcard/coc/gestures/tap_$1.rec of=/dev/input/event3 2>/sdcard/results.txt
+}
+
+DeployTL()
+{
+Touch tl_0
+Touch tl_1
+Touch tl_2
+Touch tl_3
+Touch tl_4
+Touch tl_5
+Touch tl_6
+Touch tl_7
+Touch tl_8
+Touch tl_9
+}
+
+DeployTR()
+{
+	Touch tr_0
+Touch tr_1
+Touch tr_2
+Touch tr_3
+Touch tr_4
+Touch tr_5
+Touch tr_6
+Touch tr_7
+Touch tr_8
+Touch tr_9
+
+}
+
+DeployBL()
+{
+	Touch bl_0
+Touch bl_1
+Touch bl_2
+Touch bl_3 
+
+}
+DeployBR()
+{
+	Touch br_0
+Touch br_1
+Touch br_2
+Touch br_3 
+
 }
