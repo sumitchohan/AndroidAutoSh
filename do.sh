@@ -735,15 +735,16 @@ Attack()
 			#SendMessage "snapshot.sh"
 			shouldAttack=$(ShouldAttack $1)
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
-			Log1 "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
+			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de"
 			if [ "$shouldAttack" = "y" ] 
 			then
 				Zoom
 				Zoom
 				Log "attacking on th10"
 				echo "ready to attack"
-				Log1 "Attacking"
+				LogRemote "Attacking"
 				QuickAttack $1
+				LogRemote "Attack done!"
 				break
 			fi 
 			Log "not attacking"
@@ -1091,6 +1092,7 @@ Run()
 	LogRemote "$1_Starting"
 	Log1 "Starting Run.. $1" 
 	Init
+	Init
 	StopCOC
 	#am start -n com.x0.strai.frep/.FingerActivity
 	StartCOC	
@@ -1132,11 +1134,14 @@ Run()
 		sleep 1
 	else
 		echo "not ready"	
-		Log1 "Not Ready $1 .. taking snapshot"	
+		LogRemote "Not Ready $1 .."	
 		#SendMessage "snapshot.sh"
 		Tap 697 $quickTrainYPos
-		sleep 0.5
+		sleep 1
 		Tap 410 1085
+		sleep 1
+		Tap 410 1085
+		sleep 1
 		Tap 700 1130
 	fi
 	LogRemote "$1_Done"
@@ -1206,4 +1211,67 @@ Touch br_1
 Touch br_2
 Touch br_3 
 
+}
+
+StartThread()
+{
+
+error="y"
+waitCount=40
+waitCounter=$waitCount
+heartBeatDelay=30
+while [ 1 -le 2 ]
+do
+	switch=$(curl https://api.keyvalue.xyz/041c2d55/myKey -k -s)
+	LogRemote "switch - $switch waitcounter - $waitCounter"
+	if [ "$switch" = "ON" ]
+	then
+		echo "On"
+		if [ "$waitCounter" -ge 0 ]
+		then
+			echo "waitCounter - $waitCounter"
+			waitCounter=$((waitCounter-1))
+			sleep $heartBeatDelay
+		else 	
+			echo "running..."
+			Run 1
+			waitCounter=$waitCount
+		fi
+	elif [ "$switch" = "STOPPED" ]
+	then
+		waitCounter=$waitCount
+		echo "Stopped. Doing Nothing"
+		sleep $heartBeatDelay
+	elif [ "$switch" = "FILE" ]
+	then
+		echo "executing file"
+		curl -s -k https://raw.githubusercontent.com/sumitchohan/sumitchohan.github.io/master/sh/run.sh -o file.sh
+		source file.sh
+		waitCounter=$waitCount
+		sleep $heartBeatDelay
+	elif [ "$switch" = "START" ]
+	then
+		curl -d "ON" -X POST https://api.keyvalue.xyz/041c2d55/myKey -k -s
+		Run 1
+		waitCounter=$waitCount
+	else
+		sleep $heartBeatDelay
+	fi
+done
+}
+
+Start()
+{
+	echo "">> thread_info
+	source thread_info
+	echo ""> thread_info
+	StartThread &
+	tid=$!
+	echo "kill $tid">>thread_info
+}
+
+LogRemote()
+{ 
+	dt=$(date '+%Y-%m-%dT%H_%M_%S');
+	curl -d "$dt - $1" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s
 }
