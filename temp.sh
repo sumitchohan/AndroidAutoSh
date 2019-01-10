@@ -1,4 +1,12 @@
-Touch()
+
+
+StartThread()
 {
-    dd if=/sdcard/coc/gestures/tap_$1.rec of=/dev/input/event3 2>/sdcard/results.txt
+   
+while [ 1 -le 2 ]
+do
+    echo "">>file.sh
+    source file.sh
+    sleep 1
+done
 }

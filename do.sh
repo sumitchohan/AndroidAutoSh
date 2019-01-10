@@ -251,34 +251,11 @@ WaitFor()
 		screencap -p "error_$1.png"
 	fi
 	echo "$result"
-}
-RepeatAct()
-{
-	retryIndex=1
-	retryCount=$3
-	while [ $retryIndex -le $retryCount ]
-	do
-		Act $1 $2
-		sleep $4
-		(( retryIndex++ ))
-	done
-}
+} 
 Hello()
 {
 	echo "Hello $1"
-}
-Repeat()
-{
-	retryIndex=1
-	retryCount=$1
-	while [ $retryIndex -le $retryCount ]
-	do
-		Log "Repeat index $retryIndex $2 $3 $4"
-		$3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16 $17
-		sleep $2
-		(( retryIndex++ ))
-	done
-}
+} 
 
 Loose()
 {
@@ -338,126 +315,7 @@ Read()
     am startservice -n com.example.sumitchohan.utilityapp/.MyIntentService --es action READ_IMAGE --es imagePath /sdcard/coc/scr.PNG --es configPath /sdcard/coc/$1.config --es completedFilePath /sdcard/coc/doneflag
     WaitForFile /sdcard/coc/doneflag
 }
-
-
-SkipVersusHome()
-{
-	Act "Home" "Zoom"
-	Sleep 4
-	Tap $1 $2
-}
-FRep()
-{
-	# Dump
-	# isFirst=$(MatchPixel 16 95 14 194 129 1)
-	# isSecond=$(MatchPixel 10 95 14 194 129 1)
-	# currNumber=1
-	# if [ "$isSecond" = "y" ]; then 
-	# 	currNumber=1
-	# elif [ "$isFirst" = "y" ]; then
-	# 	currNumber=2
-	# else
-	# 	currNumber=3
-	# fi
-	# loopCnt=0;
-	# if [ "$1" -ge "$currNumber" ]
-	# then
-	# 	loopCnt=$(($1-$currNumber))
-	# else		
-	# 	loopCnt=$((3+$1-$currNumber))
-	# fi
-	# retryIndex=0  
-	# # while [ $retryIndex -lt $loopCnt ]
-	# # do
-	# 	# Tap 17 57
-	# 	# sleep 1
-	# 	# (( retryIndex++ )
-	# # done
-	Tap 15 93		
-}
-
-Zoom1()
-{
-	Dump
-	matchedZ=$(MatchState "FrepZ")
-	matchedR=$(MatchState "FrepR")
-	matchedA=$(MatchState "FrepA")
-	echo "matchedA  - $matchedA matchedZ - $matchedZ matchedR - $matchedR"
-	if [ "$matchedR" = "n" ] &&  [ "$matchedZ" = "n" ] &&  [ "$matchedA" = "n" ]
-	then
-		StartCOC
-		sleep3
-		Dump
-		matchedZ=$(MatchState "FrepZ")
-		matchedR=$(MatchState "FrepR")
-		matchedA=$(MatchState "FrepA")
-		echo "matchedA  - $matchedA matchedZ - $matchedZ matchedR - $matchedR"
-	fi
-	if [ "$matchedR" = "y" ]
-	then
-		Act "FrepZ" "Top"
-	fi
-
-	if [ "$matchedA" = "y" ]
-	then
-		Act "FrepZ" "Top"
-		Act "FrepZ" "Top"
-	fi
-	Act "FrepZ" "Bottom"
-	 sleep 3;
-}
-
-
-Attack1()
-{
-	Dump
-	matchedZ=$(MatchState "FrepZ")
-	matchedR=$(MatchState "FrepR")
-	matchedA=$(MatchState "FrepA")
-	echo "matchedA  - $matchedA matchedZ - $matchedZ matchedR - $matchedR"
-	if [ "$matchedR" = "n" ] &&  [ "$matchedZ" = "n" ] &&  [ "$matchedA" = "n" ]
-	then
-		StartCOC
-		sleep3
-		Dump
-		matchedZ=$(MatchState "FrepZ")
-		matchedR=$(MatchState "FrepR")
-		matchedA=$(MatchState "FrepA")
-		echo "matchedA  - $matchedA matchedZ - $matchedZ matchedR - $matchedR"
-	else
-		if [ "$matchedR" = "y" ]
-		then
-			Act "FrepZ" "Top"
-			Act "FrepZ" "Top"
-		fi
-
-		if [ "$matchedZ" = "y" ]
-		then
-			Act "FrepZ" "Top"
-		fi
-		Act "FrepZ" "Bottom"
-	fi
-	sleep 20;
-}
-
-GetFrep()
-{
-	found=$(WaitFor "Frep" "" 10)
-	if [ "$found" = "n" ]
-	then
-		StartCOC
-	fi
-}
-VersusAttack()
-{
-	Tap 13 65
-	sleep 3
-	Tap 13 39
-	Tap 13 65
-	sleep 60
-	Tap 13 39
-	Tap 13 39
-}
+ 
 
 Zoom()
 {
@@ -477,37 +335,11 @@ StartCOC()
 	else
 		Log "coc"
 	fi
-	Dump
-	#isGooglePlay=$(MatchState "GooglePlay")
-	#if [ "$isGooglePlay" = "y" ]
-	#then
-	#	Act "GooglePlay" "Skip"
-	#	sleep 10
-	#fi
-	#Dump
-	
-	#isFrep=$(MatchState "FRep")
-	#if [ "$isFrep" = "n" ]
-	#then
-	#	Log "No Frep"
-	#	am start -n com.x0.strai.frep/.FingerActivity
-	#	sleep 10
-	#	am start -n com.supercell.clashofclans/.GameApp
-	#	sleep 10
-	#else
-	#	Log "Frep"
-	#fi
-
-	# am force-stop com.supercell.clashofclans
-	# sleep 2
-	# am start -n com.x0.strai.frep/.FingerActivity
-	# sleep 2
-	# am start -n com.supercell.clashofclans/.GameApp
 }
 StopCOC()
 {
 	am force-stop com.supercell.clashofclans
-	sleep 3
+	sleep 1
 } 
 
 LooseTrophies()
@@ -542,130 +374,8 @@ Home()
 		matched=$(MatchState "Home")
 		echo "$matched"
 	fi	
-}
-Versus()
-{
-	StopCOC
-	Home
-	Zoom
-	Tap 170 470 #go to Versus
-	Tap 55 600
-	Tap 622 422 #okay after battle
-	Tap 550 300
-	WaitFor "VersusBattle" "" 100
-	VersusAttack
-	sleep 1
-	StopCOC
-}
-
-Versus20()
-{
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-	Versus
-	sleep 300
-}
-Run_old()
-{
-	Home
-	Zoom
-		# Read "Home"
-		# trophy=$(cat ocred_Trophy.txt)
-		# de=$(cat ocred_DE.txt)
-		# elixir=$(cat ocred_Elixir.txt)
-		# gems=$(cat ocred_Gems.txt)
-		# gold=$(cat ocred_Gold.txt)
-		# Log "home - de $de elixir $elixir gold $gold gems $gems trophy $trophy"
-	Tap 40 520
-	sleep 0.1
-	Tap 520 95
-	sleep 0.1
-	Tap 730 448
-	Tap 85 95
-	Act "Home" "Train"
-	WaitFor "Army" "" 10
-	Read "Army"
-	army=$(cat ocred_Troops.txt)
-	Log "army $army"
-	Act "Army" "TrainTroops"
-	WaitFor "TrainTroops" "" 10
-	Read "TrainTroops"
-	trainingQueue=$(cat ocred_Troops.txt)
-	Log "trainingQueue - $trainingQueue"
-	Act "Army" "QuickTrain"
-	WaitFor "QuickTrain" "" 10
-	Act "QuickTrain" "QuickTrain1"
-	Act "QuickTrain" "QuickTrain1"
-	Act "QuickTrain" "QuickTrain1"
-	Act "QuickTrain" "QuickTrain1"
-	Act "QuickTrain" "QuickTrain1"
-	Act "QuickTrain" "QuickTrain1"
-	Act "QuickTrain" "QuickTrain1"
-	Act "QuickTrain" "QuickTrain1"
-	Act "QuickTrain" "QuickTrain1"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "QuickTrain2"
-	Act "QuickTrain" "Skip"
-	sleep .1
-	LooseTrophies $trophy
-	enoughArmyToAttack="n"
-	if [ "$army" -ge "190" ]
-	then
-		enoughArmyToAttack="y"
-	fi
-	if [ "$enoughArmyToAttack" = "y" ]
-	then
-		Attack
-	else
-		Log "not enough army - $army"
-	fi
-}
+} 
+ 
 ShouldAttack()
 {
 	result="n"
@@ -760,87 +470,12 @@ Attack()
 			echo "loot - de $de elixir $elixir gold $gold eg $eg win $win loose $loose th10 - $th10"			
 		done
 	else
-		Log1 "Battle Not Found $1 .. taking snapshot"
+		LogRemote "Battle Not Found $1 .. taking snapshot"
 		SendMessage "snapshot.sh"
 		Home
 		Attack $1
 	fi
-}
-
-CaptureBased()
-{
-	Zoom
-	Act "Home" "Attack"
-	sleep .5
-	#WaitFor "FindAMatch" "" 20
-	#Act "FindAMatch" "Find"
-	Tap 524 932
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh"
-	Tap 1444 1069
-	WaitFor "Battle" "" 120 
-	SendMessage "snapshot.sh" 
-}
-CaptureTrainData()
-{
-	WaitFor "Home" "Attacked,ConnectionLost,VersusHome,ReturnHome" 60
-	Act "Home" "Train"
-	WaitFor "Army" "" 10
-	Dump
-	Read "Army"
-	Act "Army" "TrainTroops"
-	sleep .1
-	Dump
-	Read "TrainTroops"
-	Act "TrainTroops" "Archer"
-	Act "TrainTroops" "Skip"
-}
-
-TrainTroops()
-{
-	Act "TrainTroops" "Giant"
-	Act "TrainTroops" "Archer"
-	Act "TrainTroops" "Archer"
-	Act "TrainTroops" "Archer"
-	Act "TrainTroops" "Archer"
-	Act "TrainTroops" "Archer"
-}
+} 
 
 AddTs()
 {
@@ -939,12 +574,7 @@ Diff()
 MatchPixel() #x y r g b delta
 {
   pix=$(Pixel $1 $2)
-  #rh=$(echo $pix | cut -c1-2)
-  #gh=$(echo $pix | cut -c3-4)
-  #bh=$(echo $pix | cut -c5-6)
-
-
-
+  
   rh=$(Mid $pix 0 2)
 	gh=$(Mid $pix 2 2)
   bh=$(Mid $pix 4 2)
@@ -1002,43 +632,8 @@ Donate()
     y=$((y+10))
   done
 }
-
-ReadDonation()
-{
-  echo "read donation here x y - $1 $2"
-  echo "Requester,48,$(($2-53)),200,20">donationRequest.config
-  echo "Request,48,$(($2-19)),200,20">>donationRequest.config
-  echo "Troops,80,$(($2+6)),70,27">>donationRequest.config
-  echo "Spell,211,$(($2+6)),32,24">>donationRequest.config
-  #curl http://localhost:8951/drag/200/100/200/520/10
-}
-
-GetDonationWindowBorderPoints()
-{
-  y=2
-  x=302
-  while [ $y -le 600 ]
-  do
-    isWhite=$(MatchPixel x y 255 255 255 1)
-    if [ "$isWhite" = "y" ]
-    then
-      break;
-    fi
-    y=$((y+10))
-  done
-
-  while [ $y -ge 0 ]
-  do
-    isWhite=$(MatchPixel x y 255 255 255 1)
-    if [ "$isWhite" = "n" ]
-    then
-      echo "top $x $y"
-      break;
-    fi
-    y=$((y-1))
-  done
-}
-
+ 
+ 
 QuickAttack()
 {
 	if [ "$1" = "2" ]
@@ -1048,20 +643,7 @@ QuickAttack()
 		source quick_attack_1
 	fi
 }
-
-GiantArchAttack()
-{
-	SendMessage 'giantarch_attack'
-}
-
-LoonArchAttack()
-{
-	SendMessage 'loonarch_attack'
-}
-LoonMinionAttack()
-{
-	SendMessage 'loonminion'
-}
+ 
 SwitchID()
 {
 	
@@ -1130,8 +712,10 @@ Run()
 		sleep 0.5
 		Tap 697 $quickTrainYPos
 		sleep 0.5
+		Tap 410 1085
 		Tap 700 1130
 		sleep 1
+		StopCOC
 	else
 		echo "not ready"	
 		LogRemote "Not Ready $1 .."	
@@ -1183,7 +767,7 @@ Touch tl_9
 
 DeployTR()
 {
-	Touch tr_0
+Touch tr_0
 Touch tr_1
 Touch tr_2
 Touch tr_3
@@ -1198,7 +782,7 @@ Touch tr_9
 
 DeployBL()
 {
-	Touch bl_0
+Touch bl_0
 Touch bl_1
 Touch bl_2
 Touch bl_3 
@@ -1206,11 +790,10 @@ Touch bl_3
 }
 DeployBR()
 {
-	Touch br_0
+Touch br_0
 Touch br_1
 Touch br_2
 Touch br_3 
-
 }
 
 StartThread()
@@ -1272,6 +855,9 @@ Start()
 
 LogRemote()
 { 
-	dt=$(date '+%Y-%m-%dT%H_%M_%S');
-	curl -d "$dt - $1" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s
+	dt=$(date '%H_%M_%S');
+	echo "$dt - $1<br>$(cat log_remote)">log_remote
+	dd if=log_remote of=log_remote_head ibs=1 skip=0 count=1000 2>/sdcard/results.txt
+	cp log_remote_head log_remote
+	curl -d "$(cat log_remote)" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s
 }
