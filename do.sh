@@ -509,10 +509,6 @@ Tapf()
 	# sendevent /dev/input/event1 0 0 0
 	# sleep 0.001
 }
-LogRemote()
-{	
-	Log1 $1
-}
 DeployStart()
 {
 	Tapf 40 70
@@ -527,39 +523,7 @@ DeployEnd()
 	Tapf 40 70
 	Tapf 40 70
 }
-
-RunOnEvents()
-{
-	#echo 172e1f84
-	##set https://api.keyvalue.xyz/bb7da7f2/clientId
-	#curl -X POST https://api.keyvalue.xyz/bb7da7f2/clientId/ding
-	#curl -X POST https://api.keyvalue.xyz/172e1f84/myKey/ON
-	##get
-	#curl curl -X POST https://api.keyvalue.xyz/bb7da7f2/clientId
-	#awk '{ sub("\r$", ""); print }' run.sh > run1.sh
-
-	retryIndex=1
-	retryCount=10000000
-	retryDelay=30
-	error="y"
-	key=$(cat /sdcard/key.txt)
-	while [ $retryIndex -le $retryCount ]
-	do
-		switch=$(curl https://api.keyvalue.xyz/$key/clientId -k -s)
-		echo $switch
-		curl -X POST https://api.keyvalue.xyz/$key/clientId/processing-$EPOCHREALTIME -k -s
-		if [ "$switch" = "ding" ]
-		then
-			echo "ding$EPOCHREALTIME"
-		fi
-		if [ "$switch" = "ON" ]
-		then
-			input tap 615 462
-		fi
-		curl -X POST https://api.keyvalue.xyz/$key/clientId/waiting-$EPOCHREALTIME -k -s
-		sleep $retryDelay
-	done
-}
+ 
 
 
 Diff()
@@ -803,6 +767,14 @@ Touch br_2
 Touch br_3 
 }
 
+Deploy()
+{
+	if [ "$isTroopPresent" = "y" ]
+	then
+		Tap $1 $2
+	fi 
+}
+waitCounter=0
 StartThread()
 {
 
@@ -813,7 +785,6 @@ heartBeatDelay=30
 while [ 1 -le 2 ]
 do
 	switch=$(curl https://api.keyvalue.xyz/041c2d55/myKey -k -s)
-	LogRemote "switch - $switch waitcounter - $waitCounter"
 	if [ "$switch" = "ON" ]
 	then
 		echo "On"
@@ -864,11 +835,16 @@ Start()
 
 LogRemote()
 { 
+	counterLog=""
+	if [ "$switch" = "ON" ]
+	then
+		counterLog="waitcounter - $waitCounter"
+	fi
 	dt=$(date '%H_%M_%S');
 	echo "$dt - $1<br>$(cat log_remote)">log_remote
 	dd if=log_remote of=log_remote_head ibs=1 skip=0 count=1000 2>/sdcard/results.txt
 	cp log_remote_head log_remote
-	curl -d "$(cat log_remote)" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s
+	curl -d "$counterLog<br>$(cat log_remote)" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s
 }
 
 Choose()
