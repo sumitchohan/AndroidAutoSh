@@ -361,7 +361,7 @@ LooseTrophies()
 Home()
 {
 	StartCOC
-	WaitFor "Home" "BuilderHome,ConnectionLost" 30
+	WaitFor "Home" "BuilderHome,ConnectionLost,ExitFullScreen" 10
 	matched=$(MatchState "Home")
 	if [ "$matched" = "n" ]
 	then
@@ -381,7 +381,7 @@ ShouldAttack()
 	result="n"
 	if [ "$1" = "1" ]
 	then
-		if  [ "$elixir" -ge "500000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "4500" ]
+		if  [ "$elixir" -ge "500000" ] || [ "$eg" -ge "900000" ] || [ "$de" -ge "4000" ]
 		then
 			result="y"
 		fi 
@@ -428,6 +428,7 @@ Attack()
 				win=$(cat ocred_Win.txt)
 				loose=$(cat ocred_Loose.txt) 
 				th10=$(cat ocred_Th10.txt) 
+				eg=$((gold+elixir))
 				#isth10=$(echo $th10| cut -d'_' -f 1)
 				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
 			else				
@@ -440,12 +441,13 @@ Attack()
 				loose=0
 				th10="n"
 				isth10="n"
+				eg=0
 				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
 			fi
 			#SendMessage "snapshot.sh"
 			shouldAttack=$(ShouldAttack $1)
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
-			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de"
+			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" "y"
 			if [ "$shouldAttack" = "y" ] 
 			then
 				Zoom
@@ -638,7 +640,6 @@ Run()
 	LogRemote "$1_Starting"
 	Log1 "Starting Run.. $1" 
 	Init
-	Init
 	StopCOC
 	#am start -n com.x0.strai.frep/.FingerActivity
 	StartCOC	
@@ -647,6 +648,19 @@ Run()
 	sleep 10
 	Zoom	
 	Log1 "Reached Home"	
+
+
+	Read "Home"
+
+		trophy=$(cat ocred_Trophy.txt)
+		de=$(cat ocred_DE.txt)
+		gold=$(cat ocred_Gold.txt)
+		elixir=$(cat ocred_Elixir.txt)
+		gems=$(cat ocred_Gems.txt)
+
+	LogRemote "Trophy - $trophy Gold - $gold Elixir - $elixir DE - $de Gems - $gems"
+
+
 	#SwitchID $1 
 	#Loose $1
 	quickTrainYPos=805
@@ -697,6 +711,8 @@ Run()
 
 Init()
 {
+	input keyevent 3 
+	sleep 1
 	Dump
 	isScreenOff=$(MatchPixel 100 100 0 0 0 1)
 	if [ "$isScreenOff" = "y" ]
@@ -704,7 +720,7 @@ Init()
 		input keyevent 26
 	fi 
 	input keyevent 3 
-	input swipe 400 750 400 350 
+	input swipe 400 750 400 100
 	input keyevent 3 
 
 }
@@ -721,6 +737,20 @@ SelectTroop()
 {
 	isTroopPresent="y"
 }
+
+DeployRage1()
+{
+	Tap 323 476
+	Tap 450 550
+	Tap 530 690
+}
+
+DeployRage2()
+{
+	Tap 255 632
+	Tap 385 770 
+}
+
 
 DeployTL()
 {
@@ -779,7 +809,7 @@ StartThread()
 {
 
 error="y"
-waitCount=40
+waitCount=64
 waitCounter=$waitCount
 heartBeatDelay=30
 while [ 1 -le 2 ]
@@ -787,6 +817,7 @@ do
 	switch=$(curl https://api.keyvalue.xyz/041c2d55/myKey -k -s)
 	if [ "$switch" = "ON" ]
 	then
+		LogRemote "switch - $switch counter-$waitCounter" "y"
 		echo "On"
 		if [ "$waitCounter" -ge 0 ]
 		then
@@ -800,6 +831,7 @@ do
 		fi
 	elif [ "$switch" = "STOPPED" ]
 	then
+		LogRemote "switch - $switch counter-$waitCounter" "y"
 		waitCounter=$waitCount
 		echo "Stopped. Doing Nothing"
 		sleep $heartBeatDelay
@@ -835,16 +867,17 @@ Start()
 
 LogRemote()
 { 
-	counterLog=""
-	if [ "$switch" = "ON" ]
+	headerlog=""
+	dt=$(date +%H_%M_%S);
+	if [ "$2" = "y" ] 
 	then
-		counterLog="waitcounter - $waitCounter"
+		headerlog="$dt - $1<br>"
+	else
+		echo "$dt - $1<br>$(cat log_remote)">log_remote
+		dd if=log_remote of=log_remote_head ibs=1 skip=0 count=1000 2>/sdcard/results.txt
+		cp log_remote_head log_remote
 	fi
-	dt=$(date '%H_%M_%S');
-	echo "$dt - $1<br>$(cat log_remote)">log_remote
-	dd if=log_remote of=log_remote_head ibs=1 skip=0 count=1000 2>/sdcard/results.txt
-	cp log_remote_head log_remote
-	curl -d "$counterLog<br>$(cat log_remote)" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s
+	curl -d "$headerlog$(cat log_remote)" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s
 }
 
 Choose()
