@@ -47,6 +47,35 @@ Choose()
 MapTroops()
 { 
     rm /sdcard/coc/intent_completed
-    am startservice -n com.example.akshika.opencvtest/.MyIntentService --es screenImgPath scr.png --es itemImgPaths king,primo,queen,archer --es directoryPath /sdcard/coc --es resultsFilePath choose.sh --es input_offset_x 0 --es input_offset_y 0 --es input_width 125 --es input_height 1200
+    am startservice -n com.example.akshika.opencvtest/.MyIntentService --es screenImgPath  battle2.png --es itemImgPaths lava --es directoryPath /sdcard/coc --es resultsFilePath choose.sh --es input_offset_x 0 --es input_offset_y 0 --es input_width 125 --es input_height 1200
     WaitForFile /sdcard/coc/intent_completed
 }
+
+
+foo()
+{
+      am startservice -n com.example.akshika.opencvtest/.MyIntentService --es screenImgPath  troops.png --es itemImgPaths minion --es directoryPath /sdcard --es resultsFilePath choose.sh --es input_offset_x 0 --es input_offset_y 0 --es input_width 125 --es input_height 1200
+  
+}
+
+
+SwitchID()
+{
+    Log1 "ID switching to $1"
+    Tap 190 1240 
+    sleep 10
+	Tap 200 750 
+    sleep 10
+    Tap 500 970
+    sleep 5
+	Act SCIDLO Confirm
+	sleep 3
+	Tap 60 440  
+	if [ "$1" = "1" ]
+	then
+		Tap 340 560 #ID1
+	else
+		Tap 440 560 #ID2
+	fi
+	WaitFor "Home" "" 10 
+} 

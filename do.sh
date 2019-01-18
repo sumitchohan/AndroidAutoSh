@@ -390,8 +390,8 @@ ShouldAttack()
 			result="y"
 		fi
 	else
-		if  [ "$elixir" -ge "350000" ]
-		then 
+		if  [ "$elixir" -ge "500000" ] || [ "$eg" -ge "900000" ] || [ "$de" -ge "4000" ]
+		then
 			result="y"
 		fi 
 	fi 
@@ -447,7 +447,7 @@ Attack()
 			#SendMessage "snapshot.sh"
 			shouldAttack=$(ShouldAttack $1)
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
-			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" "y"
+			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" "y" 
 			if [ "$shouldAttack" = "y" ] 
 			then
 				Zoom
@@ -561,7 +561,8 @@ MatchPixel() #x y r g b delta
 IsReadyForAttack()
 {
 	Dump	
-    if [ $(MatchPixel 631 143 64 116 09 100) = "y" ] #&& [ $(MatchPixel 551 296 64 117 09 100) = "y" ]
+    #if [ $(MatchPixel 631 143 64 116 09 100) = "y" ] #&& [ $(MatchPixel 551 296 64 117 09 100) = "y" ]
+    if [ $(MatchPixel 640 721 232 232 224 50) = "y" ] #&& [ $(MatchPixel 551 296 64 117 09 100) = "y" ]
     then		
 		echo "y"
 	else 
@@ -609,32 +610,28 @@ QuickAttack()
 		source quick_attack_1
 	fi
 }
- 
+
 SwitchID()
 {
-	
-	Log1 "ID switching to $1"
-	Tap 760 520
-	WaitFor "Settings" "" 10
-	Act Settings Connected
-	WaitFor "SCID" "" 15
-	Act SCID Logout
-	WaitFor "SCIDLO" "" 15
-	Act SCIDLO Confirm
-	sleep 3
-	Tap 220 620
-	WaitFor "SCIDCFS" "" 5
+    Log1 "ID switching to $1"
+    Tap 190 1240 
+    sleep 1
+	Tap 200 750 
+    sleep 10
+    Tap 500 970
+    sleep 1
+    Tap 296 792
+	sleep 10
+	Tap 60 440  
+    sleep 10
 	if [ "$1" = "1" ]
 	then
-		Tap 300 390 #ID1
+		Tap 340 560 #ID1
 	else
-		Tap 300 295 #ID2
+		Tap 440 560 #ID2
 	fi
-	Log1 "ID Switched to $1"
-	SendMessage "snapshot.sh"
-	WaitFor "Home" "" 10
-	Zoom
-}
+	WaitFor "Home" "" 10 
+} 
 Run()
 {
 	LogRemote "$1_Starting"
@@ -645,7 +642,7 @@ Run()
 	StartCOC	
 	Log1 "Trying Home"
 	Home
-	sleep 10
+	SwitchID $1
 	Zoom	
 	Log1 "Reached Home"	
 
@@ -809,7 +806,7 @@ StartThread()
 {
 
 error="y"
-waitCount=64
+waitCount=24
 waitCounter=$waitCount
 heartBeatDelay=30
 while [ 1 -le 2 ]
@@ -826,7 +823,7 @@ do
 			sleep $heartBeatDelay
 		else 	
 			echo "running..."
-			Run 1
+			Exec
 			waitCounter=$waitCount
 		fi
 	elif [ "$switch" = "STOPPED" ]
@@ -862,7 +859,11 @@ Start()
 	tid=$!
 	echo "kill $tid">>thread_info
 }
-
+Exec()
+{
+	Run 1
+	#Run 2
+}
 
 
 LogRemote()
@@ -877,7 +878,7 @@ LogRemote()
 		dd if=log_remote of=log_remote_head ibs=1 skip=0 count=1000 2>/sdcard/results.txt
 		cp log_remote_head log_remote
 	fi
-	curl -d "$headerlog$(cat log_remote)" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s
+	curl -d "$headerlog$(cat log_remote)" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s &
 }
 
 Choose()
