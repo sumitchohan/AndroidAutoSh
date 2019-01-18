@@ -658,7 +658,7 @@ Run()
 		elixir=$(cat ocred_Elixir.txt)
 		gems=$(cat ocred_Gems.txt)
 
-	LogRemote "Trophy - $trophy Gold - $gold Elixir - $elixir DE - $de Gems - $gems"
+	LogRemote "T - $trophy G - $gold E - $elixir D - $de"
 
 
 	#SwitchID $1 
