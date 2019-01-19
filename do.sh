@@ -861,7 +861,9 @@ Start()
 }
 Exec()
 {
+	LogRemote "exec-running 1"
 	Run 1
+	LogRemote "exec-running 2"
 	Run 2
 }
 
