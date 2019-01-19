@@ -704,6 +704,12 @@ Run()
 		Tap 700 1130
 	fi
 	LogRemote "$1_Done"
+
+	if [ "$1" = "1" ]
+	then
+		LogRemote "running 2"
+		Run 2
+	fi
 }
 
 Init()
@@ -864,7 +870,7 @@ Exec()
 	LogRemote "exec-running 1"
 	Run 1
 	LogRemote "exec-running 2"
-	Run 2
+	#Run 2
 }
 
 
