@@ -21,7 +21,7 @@ Touch tl_4
 Touch tl_6
 
 
-sleep 10
+sleep 5
 Tap 65 870
 DeployRage1
 DeployRage2
