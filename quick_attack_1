@@ -1,10 +1,10 @@
 Tap 65 315
 DeployTL
-DeployTR
-DeployBL
-DeployBR
 DeployTL
-DeployTR
+DeployTL
+DeployTL
+DeployTL
+DeployTL
 sleep 1
 Tap 65 500
 Touch tl_2

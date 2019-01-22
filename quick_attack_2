@@ -1,16 +1,10 @@
 Tap 65 315
 DeployTL
-DeployTR
-DeployBL
-DeployBR
 DeployTL
-DeployTR
 DeployTL
-DeployTR
-DeployBL
-DeployBR
 DeployTL
-DeployTR
+DeployTL
+DeployTL
 sleep 1
 Tap 65 500
 Touch tl_2
@@ -19,45 +13,47 @@ Touch tl_3
 Touch tl_9
 Touch tl_4
 Touch tl_6
-
-
-sleep 5
-Tap 65 870
-DeployRage1
-DeployRage2
-
 Tap 65 600 
+DeployTL
+
+
+sleep 2
+Tap 65 970
+DeployRage1
+DeployRage2 
+
+Tap 65 700
 DeployRage1
 DeployRage2
 Touch tl_2
 Touch tl_4
 Touch tl_6 
 
-Tap 65 700
+Tap 65 800
 DeployRage1
 DeployRage2
 Touch tl_9
 Touch tl_5
 Touch tl_3
-Tap 65 780
+Tap 65 880
 DeployRage1
 DeployRage2
 Touch tl_9
 Touch tl_5
 Touch tl_3
-sleep 1
-Tap 65 600 
+sleep 1 
 Tap 65 700 
 Tap 65 780
+Tap 65 880
 sleep 3
 
-Tap 65 870
+Tap 65 970
 DeployRage2
-Tap 65 600
+Tap 65 900
 DeployRage2
-Tap 65 700
+Tap 65 800
 DeployRage2
-Tap 65 780
+Tap 65 680
 DeployRage2
 
 Tap 65 220
