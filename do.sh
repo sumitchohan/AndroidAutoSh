@@ -463,7 +463,7 @@ Attack()
 			echo "not attacking"
 			#Act "Battle" "Next"
 			Tap 200 1185
-			battleFound=$(WaitFor "Battle" "" 100)
+			battleFound=$(WaitFor "Battle" "" 30)
 			if [ "$battleFound" = "n" ]
 			then
 				break
