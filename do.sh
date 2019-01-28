@@ -688,6 +688,8 @@ Run()
 		Tap 697 $quickTrainYPos
 		sleep 0.5
 		Tap 410 1085
+        Tap 700 800
+        Tap 300 250
 		Tap 700 1130
 		sleep 1
 		StopCOC
