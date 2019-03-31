@@ -13,11 +13,19 @@ Touch tl_3
 Touch tl_9
 Touch tl_4
 Touch tl_6
+Touch tl_2
+Touch tl_8
+Touch tl_3
+Touch tl_9
+Touch tl_4
+Touch tl_6
 Tap 65 600 
 DeployTL
 
 
-sleep 2
+ 
+
+sleep 1
 Tap 65 970
 DeployRage1
 DeployRage2 

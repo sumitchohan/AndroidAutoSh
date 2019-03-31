@@ -390,7 +390,11 @@ ShouldAttack()
 			result="y"
 		fi
 	else
-		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "800000" ] || [ "$de" -ge "4000" ]
+		if  [ "$elixir" -ge "500000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "6000" ]
+		then
+			result="y"
+		fi 
+		if  [ "$de" -ge "7000" ]
 		then
 			result="y"
 		fi 
@@ -642,7 +646,7 @@ Run()
 	StartCOC	
 	Log1 "Trying Home"
 	Home
-	SwitchID $1
+	#SwitchID $1
 	Zoom	
 	Log1 "Reached Home"	
 
@@ -707,11 +711,7 @@ Run()
 	fi
 	LogRemote "$1_Done"
 
-	if [ "$1" = "1" ]
-	then
-		LogRemote "running 2"
-		Run 2
-	fi
+	 
 }
 
 Init()
@@ -814,12 +814,12 @@ StartThread()
 {
 
 error="y"
-waitCount=24
+waitCount=50
 waitCounter=$waitCount
 heartBeatDelay=30
 while [ 1 -le 2 ]
 do
-	switch=$(curl https://api.keyvalue.xyz/041c2d55/myKey -k -s)
+	switch=$(curl https://api.keyvalue.xyz/36a4fc98/myKey -k -s)
 	if [ "$switch" = "ON" ]
 	then
 		LogRemote "switch - $switch counter-$waitCounter" "y"
@@ -849,8 +849,8 @@ do
 		sleep $heartBeatDelay
 	elif [ "$switch" = "START" ]
 	then
-		curl -d "ON" -X POST https://api.keyvalue.xyz/041c2d55/myKey -k -s
-		Run 1
+		curl -d "ON" -X POST https://api.keyvalue.xyz/36a4fc98/myKey -k -s
+		Exec
 		waitCounter=$waitCount
 	else
 		sleep $heartBeatDelay
@@ -869,10 +869,10 @@ Start()
 }
 Exec()
 {
-	LogRemote "exec-running 1"
-	Run 1
+	#LogRemote "exec-running 1"
+	#Run 1
 	LogRemote "exec-running 2"
-	#Run 2
+	Run 2
 }
 
 
@@ -888,7 +888,7 @@ LogRemote()
 		dd if=log_remote of=log_remote_head ibs=1 skip=0 count=1000 2>/sdcard/results.txt
 		cp log_remote_head log_remote
 	fi
-	curl -d "$headerlog$(cat log_remote)" -X POST https://api.keyvalue.xyz/bc4b42e6/logKey -k -s &
+	curl -d "$headerlog$(cat log_remote)" -X POST https://api.keyvalue.xyz/144f05f9/myKey -k -s &
 }
 
 Choose()
