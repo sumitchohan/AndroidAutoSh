@@ -845,6 +845,8 @@ do
 		echo "executing file"
 		curl -s -k https://raw.githubusercontent.com/sumitchohan/sumitchohan.github.io/master/sh/run.sh -o file.sh
 		source file.sh
+		curl -d "ON" -X POST https://api.keyvalue.xyz/36a4fc98/myKey -k -s
+		
 		waitCounter=$waitCount
 		sleep $heartBeatDelay
 	elif [ "$switch" = "START" ]
