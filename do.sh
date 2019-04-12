@@ -180,6 +180,8 @@ Act()
 	Log "Act $1 $2"
 	ProcessStateActionInternal $1 "act"	$2
 }
+ 
+
 
 
 WaitFor()
@@ -226,14 +228,32 @@ WaitFor()
 			connError=$(MatchState ConnectionLost)
 			if [ "$connError" = "y" ]
 			then
+
+
+
 				Tap 5 400
 				Home
 				
-				Act "Home" "Attack"
-				sleep .5
-				#WaitFor "FindAMatch" "" 20
-				#Act "FindAMatch" "Find"
-				Tap 230 460
+
+
+	Tap 80 50
+	sleep .5
+	#WaitFor "FindAMatch" "" 20
+	#Act "FindAMatch" "Find"
+	Tap 178 257 
+
+			fi
+
+			isHome=$(MatchState Home)
+
+			if [ "$isHome" = "y" ]
+			then 
+				 
+	Tap 80 50
+	sleep .5
+	#WaitFor "FindAMatch" "" 20
+	#Act "FindAMatch" "Find"
+	Tap 178 257
 
 			fi
 		
