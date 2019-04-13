@@ -472,21 +472,41 @@ Attack()
 			shouldAttack=$(ShouldAttack $1)
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
 			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" "y" 
+			loose="n"
 			if [ "$shouldAttack" = "y" ] 
 			then
 				Zoom
-				Zoom
-				Log "attacking on th10"
+				Zoom 
 				echo "ready to attack"
 				LogRemote "Attacking"
 				QuickAttack $1
 				LogRemote "Attack done!"
 				break
+			else
+				if [ "$shouldLoose" = "y" ]
+				echo "looseCount - $looseCount"
+				then
+					if [ "$looseCount" -gt "0" ]
+					then
+						Zoom
+						Zoom
+						echo "loosing"
+						LooseAttack
+						(( looseCount-- ))
+						loose="y"
+						Tap 80 50
+						sleep .5 
+						Tap 178 257
+					fi
+				fi
 			fi 
 			Log "not attacking"
 			echo "not attacking"
 			#Act "Battle" "Next"
-			Tap 200 1185
+			if [ "$loose" = "n" ]
+			then
+				Tap 200 1185
+			fi
 			battleFound=$(WaitFor "Battle" "" 30)
 			if [ "$battleFound" = "n" ]
 			then
@@ -502,7 +522,17 @@ Attack()
 		Attack $1
 	fi
 } 
+LooseAttack()
+{
+	Tap 65 220
+Touch tl_0
+Tap 169 85
+Tap 320 750
+Tap 135 640
 
+	
+
+}
 AddTs()
 {
 while read data; do
@@ -656,10 +686,15 @@ SwitchID()
 	fi
 	WaitFor "Home" "" 10 
 } 
+maxTrophy=2400
+shouldLoose="n"
+looseCount=0
 Run()
 {
 	LogRemote "$1_Starting"
 	Log1 "Starting Run.. $1" 
+shouldLoose="n"
+looseCount=0
 	Init
 	StopCOC
 	#am start -n com.x0.strai.frep/.FingerActivity
@@ -680,6 +715,12 @@ Run()
 		gems=$(cat ocred_Gems.txt)
 
 	LogRemote "T - $trophy G - $gold E - $elixir D - $de"
+
+if [ "$trophy" -gt "$maxTrophy" ]
+then
+	shouldLoose="y"
+	looseCount=6
+fi
 
 
 	#SwitchID $1 
