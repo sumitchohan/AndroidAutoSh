@@ -242,7 +242,7 @@ WaitFor()
 	#Act "FindAMatch" "Find"
 	Tap 178 257 
 
-			fi
+		else
 
 			isHome=$(MatchState Home)
 
@@ -254,6 +254,9 @@ WaitFor()
 	#WaitFor "FindAMatch" "" 20
 	#Act "FindAMatch" "Find"
 	Tap 178 257
+
+			fi
+
 
 			fi
 		
@@ -430,7 +433,7 @@ Attack()
 	#WaitFor "FindAMatch" "" 20
 	#Act "FindAMatch" "Find"
 	Tap 178 257
-	battleFound=$(WaitFor "Battle" "" 20)
+	battleFound=$(WaitFor "Battle" "" 10)
 	if [ "$battleFound" = "y" ]
 	then
 		#Zoom		
@@ -507,7 +510,7 @@ Attack()
 			then
 				Tap 200 1185
 			fi
-			battleFound=$(WaitFor "Battle" "" 30)
+			battleFound=$(WaitFor "Battle" "" 10)
 			if [ "$battleFound" = "n" ]
 			then
 				break
@@ -689,12 +692,15 @@ SwitchID()
 maxTrophy=2400
 shouldLoose="n"
 looseCount=0
+failedCount=0
 Run()
 {
+failedCount=0
 	LogRemote "$1_Starting"
 	Log1 "Starting Run.. $1" 
 shouldLoose="n"
 looseCount=0
+
 	Init
 	StopCOC
 	#am start -n com.x0.strai.frep/.FingerActivity
@@ -723,6 +729,7 @@ then
 fi
 
 
+	LogRemote "trophy - $trophy maxTrophy - $maxTrophy shouldLoose-$shouldLoose looseCount-$looseCount"
 	#SwitchID $1 
 	#Loose $1
 	quickTrainYPos=805
@@ -769,6 +776,7 @@ fi
 		Tap 410 1085
 		sleep 1
 		Tap 700 1130
+		StopCOC
 	fi
 	LogRemote "$1_Done"
 
@@ -880,7 +888,7 @@ waitCounter=$waitCount
 heartBeatDelay=30
 while [ 1 -le 2 ]
 do
-	switch=$(curl https://api.keyvalue.xyz/36a4fc98/myKey -k -s)
+	switch=$(curl http://timus.freeasphost.net/KeyValue.aspx?key=action -k -s)
 	if [ "$switch" = "ON" ]
 	then
 		LogRemote "switch - $switch counter-$waitCounter" "y"
@@ -906,13 +914,13 @@ do
 		echo "executing file"
 		curl -s -k https://raw.githubusercontent.com/sumitchohan/sumitchohan.github.io/master/sh/run.sh -o file.sh
 		source file.sh
-		curl -d "ON" -X POST https://api.keyvalue.xyz/36a4fc98/myKey -k -s
+		curl -d "ON" -X POST http://timus.freeasphost.net/KeyValue.aspx?key=action -k -s
 		
 		waitCounter=$waitCount
 		sleep $heartBeatDelay
 	elif [ "$switch" = "START" ]
 	then
-		curl -d "ON" -X POST https://api.keyvalue.xyz/36a4fc98/myKey -k -s
+		curl -d "ON" -X POST http://timus.freeasphost.net/KeyValue.aspx?key=action -k -s
 		Exec
 		waitCounter=$waitCount
 	else
@@ -951,7 +959,8 @@ LogRemote()
 		dd if=log_remote of=log_remote_head ibs=1 skip=0 count=1000 2>/sdcard/results.txt
 		cp log_remote_head log_remote
 	fi
-	curl -d "$headerlog$(cat log_remote)" -X POST https://api.keyvalue.xyz/144f05f9/myKey -k -s &
+	#http://timus.freeasphost.net/KeyValue.aspx?key=actionLog
+	curl -d "$headerlog$(cat log_remote)" -X POST http://timus.freeasphost.net/KeyValue.aspx?key=actionLog -k -s 
 }
 
 Choose()
