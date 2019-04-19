@@ -402,6 +402,8 @@ Home()
 ShouldAttack()
 {
 	result="n"
+	if [ "$playernotinleague" = "y" ]
+	then
 	if [ "$1" = "1" ]
 	then
 		if  [ "$elixir" -ge "600000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "4000" ]
@@ -422,6 +424,28 @@ ShouldAttack()
 			result="y"
 		fi 
 	fi 
+	else
+	if [ "$1" = "1" ]
+	then
+		if  [ "$elixir" -ge "600000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "4000" ]
+		then
+			result="y"
+		fi 
+		if  [ "$elixir" -ge "900000" ] || [ "$eg" -ge "1800000" ] || [ "$de" -ge "7000" ]
+		then 
+			result="y"
+		fi
+	else
+		if  [ "$elixir" -ge "650000" ] || [ "$eg" -ge "1200000" ] || [ "$de" -ge "6500" ]
+		then
+			result="y"
+		fi 
+		if  [ "$de" -ge "7000" ]
+		then
+			result="y"
+		fi 
+	fi 
+	fi
 	Log "Should Attack - $1 $elixir $eg $isth10 $result"
 	echo $result
 }
@@ -454,22 +478,23 @@ Attack()
 				gold=$(cat ocred_Gold.txt) 
 				win=$(cat ocred_Win.txt)
 				loose=$(cat ocred_Loose.txt) 
-				th10=$(cat ocred_Th10.txt) 
+				th10="n"
 				eg=$((gold+elixir))
 				#isth10=$(echo $th10| cut -d'_' -f 1)
-				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
+				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10 , playernotinleague - $playernotinleague"
 			else				
-				echo "player in league, skipping"
-				Log1 "Player in league, skipping"
-				de=0
-				elixir=0
-				gold=0
-				win=0
-				loose=0
+				echo "player in league"
+				Log1 "Player in league"
+				Read "Battle"			
+				de=$(cat ocred_DE.txt)
+				elixir=$(cat ocred_Elixir.txt)
+				gold=$(cat ocred_Gold.txt) 
+				win=$(cat ocred_Win.txt)
+				loose=$(cat ocred_Loose.txt) 
 				th10="n"
 				isth10="n"
 				eg=0
-				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10"
+				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10, playernotinleague- $playernotinleague"
 			fi
 			#SendMessage "snapshot.sh"
 			shouldAttack=$(ShouldAttack $1)
@@ -689,7 +714,7 @@ SwitchID()
 	fi
 	WaitFor "Home" "" 10 
 } 
-maxTrophy=2400
+maxTrophy=7000
 shouldLoose="n"
 looseCount=0
 failedCount=0
@@ -953,14 +978,14 @@ LogRemote()
 	dt=$(date +%H_%M_%S);
 	if [ "$2" = "y" ] 
 	then
-		headerlog="$dt - $1<br>"
+		headerlog="$dt - $1;"
 	else
-		echo "$dt - $1<br>$(cat log_remote)">log_remote
+		echo "$dt - $1;$(cat log_remote)">log_remote
 		dd if=log_remote of=log_remote_head ibs=1 skip=0 count=1000 2>/sdcard/results.txt
 		cp log_remote_head log_remote
 	fi
 	#http://timus.freeasphost.net/KeyValue.aspx?key=actionLog
-	curl -d "$headerlog$(cat log_remote)" -X POST http://timus.freeasphost.net/KeyValue.aspx?key=actionLog -k -s 
+	curl -d "$headerlog$(cat log_remote)" http://timus.freeasphost.net/KeyValue.aspx?key=actionLog -s 
 }
 
 Choose()
