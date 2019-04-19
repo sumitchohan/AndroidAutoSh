@@ -436,7 +436,7 @@ ShouldAttack()
 			result="y"
 		fi
 	else
-		if  [ "$elixir" -ge "650000" ] || [ "$eg" -ge "1200000" ] || [ "$de" -ge "6500" ]
+		if  [ "$elixir" -ge "700000" ] || [ "$eg" -ge "1400000" ] || [ "$de" -ge "7000" ]
 		then
 			result="y"
 		fi 
@@ -485,6 +485,7 @@ Attack()
 			else				
 				echo "player in league"
 				Log1 "Player in league"
+				playernotinleague="n"
 				Read "Battle"			
 				de=$(cat ocred_DE.txt)
 				elixir=$(cat ocred_Elixir.txt)
