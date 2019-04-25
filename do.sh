@@ -415,11 +415,11 @@ ShouldAttack()
 			result="y"
 		fi
 	else
-		if  [ "$elixir" -ge "500000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "6000" ]
+		if  [ "$elixir" -ge "450000" ] || [ "$eg" -ge "900000" ] || [ "$de" -ge "4500" ]
 		then
 			result="y"
 		fi 
-		if  [ "$de" -ge "7000" ]
+		if  [ "$de" -ge "5500" ]
 		then
 			result="y"
 		fi 
@@ -486,12 +486,17 @@ Attack()
 				echo "player in league"
 				Log1 "Player in league"
 				playernotinleague="n"
-				Read "Battle"			
-				de=$(cat ocred_DE.txt)
-				elixir=$(cat ocred_Elixir.txt)
-				gold=$(cat ocred_Gold.txt) 
-				win=$(cat ocred_Win.txt)
-				loose=$(cat ocred_Loose.txt) 
+				#Read "Battle"			
+				#de=$(cat ocred_DE.txt)
+				#elixir=$(cat ocred_Elixir.txt)
+				#gold=$(cat ocred_Gold.txt) 
+				#win=$(cat ocred_Win.txt)
+				#loose=$(cat ocred_Loose.txt) 
+				de=0
+				elixir=0
+				gold=0
+				win=0
+				loose=0
 				th10="n"
 				isth10="n"
 				eg=0
@@ -500,7 +505,7 @@ Attack()
 			#SendMessage "snapshot.sh"
 			shouldAttack=$(ShouldAttack $1)
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
-			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" "y" 
+			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" 
 			loose="n"
 			if [ "$shouldAttack" = "y" ] 
 			then
