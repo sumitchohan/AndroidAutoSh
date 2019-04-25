@@ -415,7 +415,7 @@ ShouldAttack()
 			result="y"
 		fi
 	else
-		if  [ "$elixir" -ge "450000" ] || [ "$eg" -ge "900000" ] || [ "$de" -ge "4500" ]
+		if  [ "$elixir" -ge "500000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "4500" ]
 		then
 			result="y"
 		fi 
