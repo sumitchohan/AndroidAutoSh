@@ -987,7 +987,7 @@ LogRemote()
 		headerlog="$dt - $1;"
 	else
 		echo "$dt - $1;$(cat log_remote)">log_remote
-		dd if=log_remote of=log_remote_head ibs=1 skip=0 count=1000 2>/sdcard/results.txt
+		dd if=log_remote of=log_remote_head ibs=1 skip=0 count=4000 2>/sdcard/results.txt
 		cp log_remote_head log_remote
 	fi
 	#http://timus.freeasphost.net/KeyValue.aspx?key=actionLog
