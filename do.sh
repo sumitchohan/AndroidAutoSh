@@ -449,6 +449,7 @@ ShouldAttack()
 	Log "Should Attack - $1 $elixir $eg $isth10 $result"
 	echo $result
 }
+ 
 Attack()
 {
 	Log1 "Attack Start $1"
@@ -457,7 +458,7 @@ Attack()
 	#WaitFor "FindAMatch" "" 20
 	#Act "FindAMatch" "Find"
 	Tap 178 257
-	battleFound=$(WaitFor "Battle" "" 10)
+	battleFound=$(WaitFor "Battle" "" 4)
 	if [ "$battleFound" = "y" ]
 	then
 		#Zoom		
@@ -515,6 +516,7 @@ Attack()
 				LogRemote "Attacking"
 				QuickAttack $1
 				LogRemote "Attack done!"
+				waitCount=50
 				break
 			else
 				if [ "$shouldLoose" = "y" ]
@@ -541,19 +543,18 @@ Attack()
 			then
 				Tap 200 1185
 			fi
-			battleFound=$(WaitFor "Battle" "" 10)
+			battleFound=$(WaitFor "Battle" "" 4)
 			if [ "$battleFound" = "n" ]
 			then
+				waitCount=1
 				break
 			fi 
 			Log "loot - de $de elixir $elixir gold $gold eg $eg"
 			echo "loot - de $de elixir $elixir gold $gold eg $eg win $win loose $loose th10 - $th10"			
 		done
 	else
-		LogRemote "Battle Not Found $1 .. taking snapshot"
-		SendMessage "snapshot.sh"
-		Home
-		Attack $1
+		waitCount=1
+		break
 	fi
 } 
 LooseAttack()
@@ -799,6 +800,7 @@ fi
 	else
 		echo "not ready"	
 		LogRemote "Not Ready $1 .."	
+		waitCount=50
 		#SendMessage "snapshot.sh"
 		Tap 697 $quickTrainYPos
 		sleep 1
