@@ -547,6 +547,7 @@ Attack()
 			if [ "$battleFound" = "n" ]
 			then
 				waitCount=1
+				LogRemote "$1_Battle not found. Break"
 				break
 			fi 
 			Log "loot - de $de elixir $elixir gold $gold eg $eg"
@@ -554,6 +555,7 @@ Attack()
 		done
 	else
 		waitCount=1
+		LogRemote "$1_Battle not found. Break"
 		break
 	fi
 } 
