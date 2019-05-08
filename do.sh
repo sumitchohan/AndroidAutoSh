@@ -271,7 +271,7 @@ WaitFor()
 	done
 	if [ "$result" = "n" ]
 	then
-		screencap -p "error_$1.png"
+		screencap -p "error_$1_$EPOCHREALTIME .png"
 	fi
 	echo "$result"
 } 
