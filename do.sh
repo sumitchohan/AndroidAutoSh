@@ -271,7 +271,8 @@ WaitFor()
 	done
 	if [ "$result" = "n" ]
 	then
-		screencap -p "error_$1_$EPOCHREALTIME .png"
+		screencap -p "error_$1_$EPOCHREALTIME.png"
+
 	fi
 	echo "$result"
 } 
@@ -548,6 +549,9 @@ Attack()
 			then
 				waitCount=1
 				LogRemote "$1_Battle not found. Break"
+				fileName="error_file_$1_$EPOCHREALTIME.png"
+				screencap -p "$fileName"
+				curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
 			fi 
 			Log "loot - de $de elixir $elixir gold $gold eg $eg"
@@ -556,7 +560,10 @@ Attack()
 	else
 		waitCount=1
 		LogRemote "$1_Battle not found. Break"
-		break
+				fileName="error_file_$1_$EPOCHREALTIME.png"
+				screencap -p "$fileName"
+				curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
+				break
 	fi
 } 
 LooseAttack()
