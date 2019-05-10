@@ -551,7 +551,7 @@ Attack()
 				LogRemote "$1_Battle not found. Break"
 				fileName="error_file_$1_$EPOCHREALTIME.png"
 				screencap -p "$fileName"
-				curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
+				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
 			fi 
 			Log "loot - de $de elixir $elixir gold $gold eg $eg"
@@ -562,7 +562,7 @@ Attack()
 		LogRemote "$1_Battle not found. Break"
 				fileName="error_file_$1_$EPOCHREALTIME.png"
 				screencap -p "$fileName"
-				curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
+				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
 	fi
 } 
