@@ -551,6 +551,7 @@ Attack()
 				LogRemote "$1_Battle not found. Break"
 				fileName="error_file_$1_$EPOCHREALTIME.png"
 				screencap -p "$fileName"
+				UploadFile "$fileName" "$fileName"
 				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
 			fi 
@@ -562,10 +563,19 @@ Attack()
 		LogRemote "$1_Battle not found. Break"
 				fileName="error_file_$1_$EPOCHREALTIME.png"
 				screencap -p "$fileName"
+				UploadFile "$fileName" "$fileName"
 				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
 	fi
 } 
+
+UploadFile()
+{
+curl -X POST https://content.dropboxapi.com/2/files/upload --header "Authorization: Bearer xTLrxttvDkAAAAAAAAAAD--BthwJpER4ml0TyCeQo_0NzcWzPXXYqLgn1fk3Tc-r" --header "Dropbox-API-Arg: {\"path\": \"/coc/$2\",\"mode\": \"add\",\"autorename\": true,\"mute\": false}" --header "Content-Type: application/octet-stream" --data-binary "@$1"
+}
+
+
+
 LooseAttack()
 {
 	Tap 65 220
