@@ -550,8 +550,12 @@ Attack()
 				waitCount=1
 				LogRemote "$1_Battle not found. Break"
 				fileName="error_file_$1_$EPOCHREALTIME.png"
+				logFileName="logs_$(date +%Y%m%d).txt"
+				newLogFileName="logs_$1_$EPOCHREALTIME.txt"
+				cp logFileName newLogFileName
 				screencap -p "$fileName"
 				UploadFile "$fileName" "$fileName"
+				UploadFile "$newLogFileName" "$newLogFileName"
 				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
 			fi 
@@ -562,8 +566,12 @@ Attack()
 		waitCount=1
 		LogRemote "$1_Battle not found. Break"
 				fileName="error_file_$1_$EPOCHREALTIME.png"
+				logFileName="logs_$(date +%Y%m%d).txt"
+				newLogFileName="logs_$1_$EPOCHREALTIME.txt"
+				cp logFileName newLogFileName
 				screencap -p "$fileName"
 				UploadFile "$fileName" "$fileName"
+				UploadFile "$newLogFileName" "$newLogFileName"
 				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
 	fi
