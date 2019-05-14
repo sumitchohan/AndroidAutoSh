@@ -342,6 +342,22 @@ Read()
 		LogRemote "Read End - $1"
 }
  
+ReadBattleTest()
+{
+    LogRemote "ReadBattleTest -  Start"
+		LogRemote "ReadBattleTest -  screencap - start"
+		screencap -p /sdcard/coc/scr.PNG
+		LogRemote "ReadBattleTest -  screencap - done"
+		cp Battle.png scr.PNG
+		LogRemote "ReadBattleTest -  doneflag - remove start"
+    rm /sdcard/coc/doneflag
+		LogRemote "ReadBattleTest -  doneflag - remove done"
+    am startservice -n com.example.sumitchohan.utilityapp/.MyIntentService --es action READ_IMAGE --es imagePath /sdcard/coc/scr.PNG --es configPath /sdcard/coc/$1.config --es completedFilePath /sdcard/coc/doneflag
+   
+		LogRemote "ReadBattleTest -  WaitForFile - start"
+		WaitForFile /sdcard/coc/doneflag
+		LogRemote "ReadBattleTest - End"
+}
 
 Zoom()
 {
