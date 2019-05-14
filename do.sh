@@ -334,10 +334,12 @@ WaitForFile()
 
 Read()
 {
-	screencap -p /sdcard/coc/scr.PNG
+    LogRemote "Read Start -  $1"
+		screencap -p /sdcard/coc/scr.PNG
     rm /sdcard/coc/doneflag
     am startservice -n com.example.sumitchohan.utilityapp/.MyIntentService --es action READ_IMAGE --es imagePath /sdcard/coc/scr.PNG --es configPath /sdcard/coc/$1.config --es completedFilePath /sdcard/coc/doneflag
     WaitForFile /sdcard/coc/doneflag
+		LogRemote "Read End - $1"
 }
  
 
@@ -356,6 +358,8 @@ StartCOC()
 		Log "no coc"
 		am start -n com.supercell.clashofclans/.GameApp
 		sleep 10
+		am start -n com.supercell.clashofclans/.GameApp
+		sleep 10 
 	else
 		Log "coc"
 	fi
@@ -459,7 +463,7 @@ Attack()
 	#WaitFor "FindAMatch" "" 20
 	#Act "FindAMatch" "Find"
 	Tap 178 257
-	battleFound=$(WaitFor "Battle" "" 4)
+	battleFound=$(WaitFor "Battle" "" 20)
 	if [ "$battleFound" = "y" ]
 	then
 		#Zoom		
@@ -544,18 +548,12 @@ Attack()
 			then
 				Tap 200 1185
 			fi
-			battleFound=$(WaitFor "Battle" "" 4)
+			battleFound=$(WaitFor "Battle" "" 20)
 			if [ "$battleFound" = "n" ]
 			then
 				waitCount=1
 				LogRemote "$1_Battle not found. Break"
-				fileName="error_file_$1_$EPOCHREALTIME.png"
-				logFileName="logs_$(date +%Y%m%d).txt"
-				newLogFileName="logs_$1_$EPOCHREALTIME.txt"
-				cp logFileName newLogFileName
-				screencap -p "$fileName"
-				UploadFile "$fileName" "$fileName"
-				UploadFile "$newLogFileName" "$newLogFileName"
+				UploadScrLog
 				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
 			fi 
@@ -565,21 +563,27 @@ Attack()
 	else
 		waitCount=1
 		LogRemote "$1_Battle not found. Break"
-				fileName="error_file_$1_$EPOCHREALTIME.png"
-				logFileName="logs_$(date +%Y%m%d).txt"
-				newLogFileName="logs_$1_$EPOCHREALTIME.txt"
-				cp logFileName newLogFileName
-				screencap -p "$fileName"
-				UploadFile "$fileName" "$fileName"
-				UploadFile "$newLogFileName" "$newLogFileName"
+		UploadScrLog
 				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
 	fi
 } 
 
+UploadScrLog()
+{
+
+				fileName="error_file_$1_$EPOCHREALTIME.png"
+				logFileName="logs_$(date +%Y%m%d).txt"
+				newLogFileName="logs_$1_$EPOCHREALTIME.txt"
+				#cp $logFileName $newLogFileName
+				#screencap -p "$fileName"
+				#UploadFile "$fileName" "$fileName"
+				#UploadFile "$newLogFileName" "$newLogFileName"
+				#rm $newLogFileName
+}
 UploadFile()
 {
-curl -X POST https://content.dropboxapi.com/2/files/upload --header "Authorization: Bearer xTLrxttvDkAAAAAAAAAAD--BthwJpER4ml0TyCeQo_0NzcWzPXXYqLgn1fk3Tc-r" --header "Dropbox-API-Arg: {\"path\": \"/coc/$2\",\"mode\": \"add\",\"autorename\": true,\"mute\": false}" --header "Content-Type: application/octet-stream" --data-binary "@$1"
+curl -X POST https://content.dropboxapi.com/2/files/upload --header "Authorization: Bearer xTLrxttvDkAAAAAAAAAAD--BthwJpER4ml0TyCeQo_0NzcWzPXXYqLgn1fk3Tc-r" --header "Dropbox-API-Arg: {\"path\": \"/coc/$2\",\"mode\": \"add\",\"autorename\": true,\"mute\": false}" --header "Content-Type: application/octet-stream" --data-binary "@$1" --insecure
 }
 
 
