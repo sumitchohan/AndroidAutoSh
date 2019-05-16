@@ -337,9 +337,15 @@ Read()
     LogRemote "Read Start -  $1"
 		screencap -p /sdcard/coc/scr.PNG
     rm /sdcard/coc/doneflag
-    am startservice -n com.example.sumitchohan.utilityapp/.MyIntentService --es action READ_IMAGE --es imagePath /sdcard/coc/scr.PNG --es configPath /sdcard/coc/$1.config --es completedFilePath /sdcard/coc/doneflag
-    WaitForFile /sdcard/coc/doneflag
+		am start -n com.example.sumitchohan.utilityapp/.MainActivity
+		sleep 2
+    #am startservice -n com.example.sumitchohan.utilityapp/.MyIntentService --es action READ_IMAGE --es imagePath /sdcard/coc/scr.PNG --es configPath /sdcard/coc/$1.config --es completedFilePath /sdcard/coc/doneflag
+    Tap 625 1180
+		WaitForFile /sdcard/coc/doneflag
 		LogRemote "Read End - $1"
+		am start -n com.supercell.clashofclans/.GameApp
+		sleep 2
+		#am force-stop com.example.sumitchohan.utilityapp 
 }
  
 ReadBattleTest()
@@ -394,7 +400,7 @@ LooseTrophies()
 		Log "trophy $trophy ; loosing.."
 		Loose
 		WaitFor "Home" "Attacked,ConnectionLost,VersusHome,ReturnHome" 60
-		Read "Home"
+		#Read "Home"
 		trophy=$(cat ocred_Trophy.txt)
 		de=$(cat ocred_DE.txt)
 		elixir=$(cat ocred_Elixir.txt)
@@ -470,7 +476,7 @@ ShouldAttack()
 	Log "Should Attack - $1 $elixir $eg $isth10 $result"
 	echo $result
 }
- 
+maxWaitCount=12
 Attack()
 {
 	Log1 "Attack Start $1"
@@ -537,7 +543,7 @@ Attack()
 				LogRemote "Attacking"
 				QuickAttack $1
 				LogRemote "Attack done!"
-				waitCount=50
+				waitCount=$maxWaitCount
 				break
 			else
 				if [ "$shouldLoose" = "y" ]
@@ -791,15 +797,15 @@ looseCount=0
 	Log1 "Reached Home"	
 
 
-	Read "Home"
+	#Read "Home"
 
-		trophy=$(cat ocred_Trophy.txt)
-		de=$(cat ocred_DE.txt)
-		gold=$(cat ocred_Gold.txt)
-		elixir=$(cat ocred_Elixir.txt)
-		gems=$(cat ocred_Gems.txt)
+	#	trophy=$(cat ocred_Trophy.txt)
+	#	de=$(cat ocred_DE.txt)
+	#	gold=$(cat ocred_Gold.txt)
+	#	elixir=$(cat ocred_Elixir.txt)
+	#	gems=$(cat ocred_Gems.txt)
 
-	LogRemote "T - $trophy G - $gold E - $elixir D - $de"
+	#LogRemote "T - $trophy G - $gold E - $elixir D - $de"
 
 if [ "$trophy" -gt "$maxTrophy" ]
 then
@@ -847,7 +853,7 @@ fi
 	else
 		echo "not ready"	
 		LogRemote "Not Ready $1 .."	
-		waitCount=50
+		waitCount=$maxWaitCount
 		#SendMessage "snapshot.sh"
 		Tap 697 $quickTrainYPos
 		sleep 1
@@ -963,7 +969,7 @@ StartThread()
 {
 
 error="y"
-waitCount=50
+waitCount=$maxWaitCount
 waitCounter=$waitCount
 heartBeatDelay=30
 while [ 1 -le 2 ]
