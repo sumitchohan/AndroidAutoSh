@@ -360,3 +360,33 @@ Foo()
 	echo $rgb;
 }
 
+
+GetNearestPoint()
+{
+    minDistance=10000000
+    x=0
+    y=0
+    while read p; do
+    IFS="_" 
+    pixelParts[1]=""
+	pixelParts[2]=""
+	pixelPartsIndex=0
+	for word in $p
+	do
+		pixelParts[pixelPartsIndex]=$word
+		pixelPartsIndex=$pixelPartsIndex+1
+	done 
+    xdif=$(($1-${pixelParts[1]}))
+    ydif=$(($2-${pixelParts[2]})) 
+    distance=$(($xdif*$xdif+$ydif*$ydif))
+    if [ $minDistance -gt $distance ]
+    then
+        minDistance=$distance
+        x=${pixelParts[1]}
+        y=${pixelParts[2]}
+    fi
+    done < clicks.txt
+    IFS=" "
+    z="_"
+    echo "click_$x$z$y"
+}

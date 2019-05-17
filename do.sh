@@ -493,7 +493,7 @@ Attack()
 		attacked="n"
 		while [ "$attacked" = "n" ]
 		do
-
+			previosLoot="";
 			Log1 "Reading Battle $1"
 			if [ $(MatchPixel 774 33 93 95 97 100) = "y" ] && [ $(MatchPixel 774 35 93 95 97 100) = "y" ] 
 			then
@@ -534,6 +534,7 @@ Attack()
 			shouldAttack=$(ShouldAttack $1)
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
 			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" 
+			loot="ShouldAttack $shouldAttack $1 $elixir $gold $de" 
 			loose="n"
 			if [ "$shouldAttack" = "y" ] 
 			then
@@ -569,6 +570,21 @@ Attack()
 			if [ "$loose" = "n" ]
 			then
 				Tap 200 1185
+				if [ "$playernotinleague" -eq "y" ]
+				then
+					if [ "$loot" -eq "$prpreviosLoot" ] 
+					then
+						LogRemote "same as previous loot"
+						Tap 168 52
+						sleep 2
+	Tap 80 50
+	sleep .5
+	#WaitFor "FindAMatch" "" 20
+	#Act "FindAMatch" "Find"
+	Tap 178 257
+
+					fi
+				fi
 			fi
 			battleFound=$(WaitFor "Battle" "" 20)
 			if [ "$battleFound" = "n" ]
@@ -1063,4 +1079,29 @@ MapTroops()
     rm /sdcard/coc/intent_completed
     am startservice -n com.example.akshika.opencvtest/.MyIntentService --es screenImgPath scr.png --es itemImgPaths king,primo,queen,archer --es directoryPath /sdcard/coc --es resultsFilePath choose.sh --es input_offset_x 0 --es input_offset_y 0 --es input_width 125 --es input_height 1200
     WaitForFile /sdcard/coc/intent_completed
+}
+
+QuickTap()
+{
+
+}
+
+Choose2()
+{
+	QuickTap 99 339
+}
+
+Choose1()
+{
+	QuickTap 99 339
+}
+
+Choose3()
+{
+	QuickTap 99 339
+}
+
+Choose4()
+{
+	QuickTap 90 499
 }
