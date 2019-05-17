@@ -570,9 +570,9 @@ Attack()
 			if [ "$loose" = "n" ]
 			then
 				Tap 200 1185
-				if [ "$playernotinleague" -eq "y" ]
+				if [ "$playernotinleague" = "y" ]
 				then
-					if [ "$loot" -eq "$prpreviosLoot" ] 
+					if [ "$loot" = "$previosLoot" ] 
 					then
 						LogRemote "same as previous loot"
 						Tap 168 52
@@ -582,7 +582,8 @@ Attack()
 	#WaitFor "FindAMatch" "" 20
 	#Act "FindAMatch" "Find"
 	Tap 178 257
-
+else
+	previosLoot=$loot
 					fi
 				fi
 			fi
