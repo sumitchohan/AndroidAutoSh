@@ -570,6 +570,7 @@ Attack()
 			if [ "$loose" = "n" ]
 			then
 				Tap 200 1185
+				LogRemote "playernotinleague -$playernotinleague loot-$loot previosLoot-$previosLoot"
 				if [ "$playernotinleague" = "y" ]
 				then
 					if [ "$loot" = "$previosLoot" ] 
