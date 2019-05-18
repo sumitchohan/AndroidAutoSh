@@ -390,3 +390,9 @@ GetNearestPoint()
     z="_"
     echo "click_$x$z$y"
 }
+
+PlayEvent()
+{
+    dd if=/sdcard/coc/gestures/$1 of=/dev/input/event3 2>/sdcard/results.txt
+
+}

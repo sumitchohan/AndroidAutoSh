@@ -480,6 +480,9 @@ maxWaitCount=12
 Attack()
 {
 	Log1 "Attack Start $1"
+	previosLoot="";
+
+	am force-stop com.example.sumitchohan.utilityapp
 	Tap 80 50
 	sleep .5
 	#WaitFor "FindAMatch" "" 20
@@ -493,7 +496,6 @@ Attack()
 		attacked="n"
 		while [ "$attacked" = "n" ]
 		do
-			previosLoot="";
 			Log1 "Reading Battle $1"
 			if [ $(MatchPixel 774 33 93 95 97 100) = "y" ] && [ $(MatchPixel 774 35 93 95 97 100) = "y" ] 
 			then
@@ -578,13 +580,13 @@ Attack()
 						LogRemote "same as previous loot"
 						Tap 168 52
 						sleep 2
-	Tap 80 50
-	sleep .5
-	#WaitFor "FindAMatch" "" 20
-	#Act "FindAMatch" "Find"
-	Tap 178 257
-else
-	previosLoot=$loot
+						Tap 80 50
+						sleep .5
+						#WaitFor "FindAMatch" "" 20
+						#Act "FindAMatch" "Find"
+						Tap 178 257
+					else
+						previosLoot=$loot
 					fi
 				fi
 			fi
@@ -910,6 +912,16 @@ Touch()
     	dd if=/sdcard/coc/gestures/tap_$1.rec of=/dev/input/event3 2>/sdcard/results.txt
 	fi
 }
+
+
+PlayRec()
+{
+	if [ "$isTroopPresent" = "y" ]
+	then
+    	dd if=/sdcard/coc/gestures/gesture$1.rec of=/dev/input/event3 2>/sdcard/results.txt
+	fi
+}
+
 
 SelectTroop()
 {
