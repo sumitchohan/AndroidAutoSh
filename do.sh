@@ -536,7 +536,6 @@ Attack()
 			shouldAttack=$(ShouldAttack $1)
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
 			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" 
-			loot="ShouldAttack $shouldAttack $1 $elixir $gold $de" 
 			loose="n"
 			if [ "$shouldAttack" = "y" ] 
 			then
@@ -572,23 +571,6 @@ Attack()
 			if [ "$loose" = "n" ]
 			then
 				Tap 200 1185
-				LogRemote "playernotinleague -$playernotinleague loot-$loot previosLoot-$previosLoot"
-				if [ "$playernotinleague" = "y" ]
-				then
-					if [ "$loot" = "$previosLoot" ] 
-					then
-						LogRemote "same as previous loot"
-						Tap 168 52
-						sleep 2
-						Tap 80 50
-						sleep .5
-						#WaitFor "FindAMatch" "" 20
-						#Act "FindAMatch" "Find"
-						Tap 178 257
-					else
-						previosLoot=$loot
-					fi
-				fi
 			fi
 			battleFound=$(WaitFor "Battle" "" 20)
 			if [ "$battleFound" = "n" ]
