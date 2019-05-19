@@ -264,6 +264,8 @@ WaitFor()
 		if [ "$1" = "Home" ] 
 		then
 			Tap 5 400
+			Tap 65 265
+			Tap 395 395
 		fi
 		sleep $retryDelay
 	fi
