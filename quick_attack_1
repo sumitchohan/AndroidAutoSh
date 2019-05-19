@@ -1,69 +1,25 @@
-Tap 65 315
+TouchRec choose1
 DeployTL
 DeployTL
 DeployTL
 DeployTL
 DeployTL
 DeployTL
-sleep 1
-Tap 65 500
-Touch tl_2
-Touch tl_8
-Touch tl_3
-Touch tl_9
-Touch tl_4
-Touch tl_6
-Touch tl_9
-Touch tl_4
-Touch tl_6
-
-
-sleep 2
-Tap 65 870
-DeployRage1
-DeployRage2
-
-Tap 65 600 
-DeployRage1
-DeployRage2
-Touch tl_2
-Touch tl_4
-Touch tl_6 
-
-Tap 65 700
-DeployRage1
-DeployRage2
-Touch tl_9
-Touch tl_5
-Touch tl_3
-Tap 65 780
-DeployRage1
-DeployRage2
-Touch tl_9
-Touch tl_5
-Touch tl_3
-sleep 1
-Tap 65 600 
-Tap 65 700 
-Tap 65 780
-sleep 3
-
-Tap 65 870
-DeployRage2
-Tap 65 600
-DeployRage2
-Tap 65 700
-DeployRage2
-Tap 65 780
-DeployRage2
-
-Tap 65 220
+TouchRec choose2
 DeployTL
 DeployTL
 DeployTL
 DeployTL
 DeployTL
-Tap 65 410
+DeployTL
+TouchRec choose3
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+TouchRec choose4
 DeployTL
 DeployTL
 DeployTL
