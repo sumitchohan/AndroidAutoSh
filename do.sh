@@ -476,7 +476,7 @@ ShouldAttack()
 	Log "Should Attack - $1 $elixir $eg $isth10 $result"
 	echo $result
 }
-maxWaitCount=12
+maxWaitCount=30
 Attack()
 {
 	Log1 "Attack Start $1"
@@ -942,6 +942,20 @@ Touch tl_4
 Touch tl_5
 Touch tl_6
 }
+
+DeployTLRB()
+{
+Touch tl_0
+Touch tl_5
+Touch tl_9
+Touch tr_5
+Touch tr_9
+Touch tl_3
+Touch tl_7
+Touch tr_3
+Touch tr_7
+}
+
 
 DeployTR()
 {
