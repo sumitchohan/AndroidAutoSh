@@ -950,10 +950,14 @@ Touch tl_5
 Touch tl_9
 Touch tr_5
 Touch tr_9
+Touch br_3
+Touch bl_3 
 Touch tl_3
 Touch tl_7
 Touch tr_3
 Touch tr_7
+Touch br_2
+Touch bl_2
 }
 
 
