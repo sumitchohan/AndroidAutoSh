@@ -1,0 +1,48 @@
+TouchRec choose2
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+TouchRec choose4
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+sleep 1 
+DeployRageSpell1
+sleep 5
+DeployRageSpell2
+TouchRec choose5
+Touch tl_2
+Touch tl_4
+Touch tl_6 
+TouchRec choose6
+Touch tl_1
+Touch tl_3
+Touch tl_5 
+TouchRec choose7
+Touch tl_2
+Touch tl_4
+Touch tl_6 
+TouchRec choose8
+Touch tl_1
+Touch tl_3
+Touch tl_5 
+TouchRec choose3
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+TouchRec choose1
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL
+DeployTL

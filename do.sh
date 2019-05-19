@@ -483,11 +483,11 @@ Attack()
 	previosLoot="";
 
 	am force-stop com.example.sumitchohan.utilityapp
-	Tap 80 50
+	TouchRec attack
 	sleep .5
 	#WaitFor "FindAMatch" "" 20
 	#Act "FindAMatch" "Find"
-	Tap 178 257
+	TouchRec findamatch
 	battleFound=$(WaitFor "Battle" "" 20)
 	if [ "$battleFound" = "y" ]
 	then
@@ -570,7 +570,17 @@ Attack()
 			#Act "Battle" "Next"
 			if [ "$loose" = "n" ]
 			then
-				Tap 200 1185
+				TouchRec next
+				if [ "$playernotinleague" = "y" ]
+				then
+					if [ "$loot" = "$previosLoot" ] 
+					then
+						LogRemote "same as previous loot"
+						NextBattle
+					else
+						previosLoot=$loot
+					fi
+				fi
 			fi
 			battleFound=$(WaitFor "Battle" "" 20)
 			if [ "$battleFound" = "n" ]
@@ -782,12 +792,11 @@ looseCount=0
 failedCount=0
 Run()
 {
-failedCount=0
+	failedCount=0
 	LogRemote "$1_Starting"
 	Log1 "Starting Run.. $1" 
-shouldLoose="n"
-looseCount=0
-
+	shouldLoose="n"
+	looseCount=0
 	Init
 	StopCOC
 	#am start -n com.x0.strai.frep/.FingerActivity
@@ -809,61 +818,56 @@ looseCount=0
 
 	#LogRemote "T - $trophy G - $gold E - $elixir D - $de"
 
-if [ "$trophy" -gt "$maxTrophy" ]
-then
-	shouldLoose="y"
-	looseCount=6
-fi
+	if [ "$trophy" -gt "$maxTrophy" ]
+	then
+		shouldLoose="y"
+		looseCount=6
+	fi
 
 
 	LogRemote "trophy - $trophy maxTrophy - $maxTrophy shouldLoose-$shouldLoose looseCount-$looseCount"
 	#SwitchID $1 
 	#Loose $1
-	quickTrainYPos=805
-	if [ "$1" = "2" ]
-	then
-		quickTrainYPos=997
-	fi
-	Tap 180 50
+	#quickTrainYPos=805
+	#if [ "$1" = "2" ]
+	#then
+	#	quickTrainYPos=997
+	#fi
+	TouchRec menu
 	sleep 0.5
-	
 	Log1 "IsReadyForAttack $1 .. taking snapshot"	
 	#SendMessage "snapshot.sh"
 	ready=$(IsReadyForAttack)	
 	LogRemote "$1_Ready - $ready"
 	if [ "$ready" = "y" ]
 	then
-		Tap 697 $quickTrainYPos
+		#Tap 697 $quickTrainYPos
+		TouchRec quicktrain
 		sleep 0.5
-		Tap 410 1085
-		Tap 700 1130
+		TouchRec train1
+		TouchRec menuclose
 		Attack $1
 		sleep 60
 		StopCOC
 		Home
 		Zoom
-		Tap 180 50
+	TouchRec menu
 		sleep 0.5
-		Tap 697 $quickTrainYPos
+		TouchRec quicktrain
 		sleep 0.5
-		Tap 410 1085
-        Tap 700 800
-        Tap 300 250
-		Tap 700 1130
-		sleep 1
+		TouchRec train1
+		TouchRec menuclose
+		sleep .5
 		StopCOC
 	else
 		echo "not ready"	
 		LogRemote "Not Ready $1 .."	
 		waitCount=$maxWaitCount
-		#SendMessage "snapshot.sh"
-		Tap 697 $quickTrainYPos
-		sleep 1
-		Tap 410 1085
-		sleep 1
-		Tap 410 1085
-		sleep 1
-		Tap 700 1130
+		TouchRec quicktrain
+		sleep 0.5
+		TouchRec train1
+		TouchRec menuclose
+		sleep .5
 		StopCOC
 	fi
 	LogRemote "$1_Done"
@@ -1100,4 +1104,63 @@ Choose3()
 Choose4()
 {
 	QuickTap 90 499
+}
+
+TouchRec()
+{
+	dd if=/sdcard/coc/gestures/$1 of=/dev/input/event3 2>/sdcard/results.txt
+}
+NextBattle()
+{
+	TouchRec next
+	TouchRec end1
+	TouchRec end2
+	sleep 5
+	TouchRec attack
+	TouchRec findamatch
+}
+DeployRageSpell1()
+{
+	TouchRec choose5 
+	TouchRec s1
+	TouchRec s2
+	TouchRec s3
+	TouchRec choose6
+	TouchRec s1
+	TouchRec s2
+	TouchRec s3
+	TouchRec choose5 
+	TouchRec choose7
+	TouchRec s1
+	TouchRec s2
+	TouchRec s3
+	TouchRec choose5 
+	TouchRec choose8
+	TouchRec s1
+	TouchRec s2
+	TouchRec s3
+	TouchRec choose9
+	TouchRec s1
+	TouchRec s2
+	TouchRec s3
+}
+DeployRageSpell2()
+{
+	TouchRec choose5
+	TouchRec s4
+	TouchRec s5 
+	TouchRec choose6
+	TouchRec s4
+	TouchRec s5 
+	TouchRec choose5 
+	TouchRec choose7
+	TouchRec s4
+	TouchRec s5 
+	TouchRec choose5 
+	TouchRec choose8
+	TouchRec s4
+	TouchRec s5 
+	TouchRec choose9
+	TouchRec s4
+	TouchRec s5 
 }
