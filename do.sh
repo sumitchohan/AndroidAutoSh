@@ -536,6 +536,7 @@ Attack()
 			shouldAttack=$(ShouldAttack $1)
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
 			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" 
+			loot="$elixir$gold$de" 
 			loose="n"
 			if [ "$shouldAttack" = "y" ] 
 			then
