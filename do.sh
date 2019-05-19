@@ -1141,7 +1141,6 @@ DeployRageSpell1()
 	TouchRec s3
 	TouchRec choose9
 	TouchRec s1
-	TouchRec s2
 	TouchRec s3
 }
 DeployRageSpell2()
