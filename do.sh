@@ -931,15 +931,15 @@ DeployRage2()
 DeployTL()
 {
 Touch tl_0
+Touch tl_9
 Touch tl_1
+Touch tl_8
 Touch tl_2
+Touch tl_7
 Touch tl_3
 Touch tl_4
 Touch tl_5
 Touch tl_6
-Touch tl_7
-Touch tl_8
-Touch tl_9
 }
 
 DeployTR()
