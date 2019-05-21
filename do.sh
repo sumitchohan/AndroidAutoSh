@@ -329,9 +329,17 @@ Loose()
 
 WaitForFile()
 { 
+	timeOut=60
     while [ ! -f $1 ]; do 
+			#echo $timeOut
+			if [ $timeOut -lt 0 ]
+			then
+				break
+			fi
         sleep 1; 
+			(( timeOut-- ))
     done
+		echo "WaitForFile - done"
 }
 
 Read()
