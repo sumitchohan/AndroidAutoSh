@@ -878,7 +878,18 @@ Run()
 		sleep 0.5
 		TouchRec train1
 		TouchRec menuclose
-		sleep .5
+		#sleep .5
+
+		#Tap 697 997
+		#sleep 1
+		#Tap 410 1085
+		#sleep 1
+		#Tap 410 1085
+		#sleep 1
+		#Tap 700 1130
+		#StopCOC
+
+
 		StopCOC
 	fi
 	LogRemote "$1_Done"
