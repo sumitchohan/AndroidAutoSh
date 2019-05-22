@@ -861,15 +861,17 @@ Run()
 		sleep 60
 		StopCOC
 		Home
-		Zoom
-	TouchRec menu
+		Zoom 
+		Tap 180 50
 		sleep 0.5
-		TouchRec quicktrain
+		Tap 697 997
 		sleep 0.5
-		TouchRec train1
-		TouchRec menuclose
-		sleep .5
-		StopCOC
+		Tap 410 1085
+        Tap 700 800
+        Tap 300 250
+		Tap 700 1130
+		sleep 1
+		StopCOC 
 	else
 		echo "not ready"	
 		LogRemote "Not Ready $1 .."	
