@@ -443,28 +443,28 @@ ShouldAttack()
 	then
 	if [ "$1" = "1" ]
 	then
-		if  [ "$elixir" -ge "600000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "4000" ]
+		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "6000" ]
 		then
 			result="y"
 		fi 
-		if  [ "$elixir" -ge "900000" ] || [ "$eg" -ge "1800000" ] || [ "$de" -ge "7000" ]
-		then 
-			result="y"
-		fi
+		#if  [ "$elixir" -ge "900000" ] || [ "$eg" -ge "1800000" ] || [ "$de" -ge "7000" ]
+		#then 
+		#	result="y"
+		#fi
 	else
-		if  [ "$elixir" -ge "500000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "4500" ]
+		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "6000" ]
 		then
 			result="y"
 		fi 
-		if  [ "$de" -ge "5500" ]
-		then
-			result="y"
-		fi 
+		#if  [ "$de" -ge "5500" ]
+		#then
+		#	result="y"
+		#fi 
 	fi 
 	else
 	if [ "$1" = "1" ]
 	then
-		if  [ "$elixir" -ge "600000" ] || [ "$eg" -ge "1000000" ] || [ "$de" -ge "4000" ]
+		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "6000" ]
 		then
 			result="y"
 		fi 
@@ -473,7 +473,7 @@ ShouldAttack()
 			result="y"
 		fi
 	else
-		if  [ "$elixir" -ge "700000" ] || [ "$eg" -ge "1400000" ] || [ "$de" -ge "7000" ]
+		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "7000" ]
 		then
 			result="y"
 		fi 
@@ -516,8 +516,8 @@ Attack()
 				de=$(cat ocred_DE.txt)
 				elixir=$(cat ocred_Elixir.txt)
 				gold=$(cat ocred_Gold.txt) 
-				win=$(cat ocred_Win.txt)
-				loose=$(cat ocred_Loose.txt) 
+				#win=$(cat ocred_Win.txt)
+				#loose=$(cat ocred_Loose.txt) 
 				th10="n"
 				eg=$((gold+elixir))
 				#isth10=$(echo $th10| cut -d'_' -f 1)
@@ -526,20 +526,15 @@ Attack()
 				echo "player in league"
 				Log1 "Player in league"
 				playernotinleague="n"
-				#Read "Battle"			
-				#de=$(cat ocred_DE.txt)
-				#elixir=$(cat ocred_Elixir.txt)
-				#gold=$(cat ocred_Gold.txt) 
+				Read "Battle"			
+				de=$(cat ocred_DE.txt)
+				elixir=$(cat ocred_Elixir.txt)
+				gold=$(cat ocred_Gold.txt) 
 				#win=$(cat ocred_Win.txt)
 				#loose=$(cat ocred_Loose.txt) 
-				de=0
-				elixir=0
-				gold=0
-				win=0
-				loose=0
+				eg=$((gold+elixir)) 
 				th10="n"
-				isth10="n"
-				eg=0
+				isth10="n" 
 				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10, playernotinleague- $playernotinleague"
 			fi
 			#SendMessage "snapshot.sh"
