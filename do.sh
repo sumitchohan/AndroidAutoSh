@@ -495,10 +495,14 @@ Attack()
 	am force-stop com.example.sumitchohan.utilityapp
 	TouchRec attack
 	sleep .5
+	Tap 150 250
+	sleep .5
+	Tap 350 950
+	sleep .5
 	#WaitFor "FindAMatch" "" 20
 	#Act "FindAMatch" "Find"
-	TouchRec findamatch
-	battleFound=$(WaitFor "Battle" "" 20)
+	#TouchRec findamatch
+	battleFound=$(WaitFor "Battle" "" 100)
 	if [ "$battleFound" = "y" ]
 	then
 		#Zoom		
@@ -588,7 +592,7 @@ Attack()
 					fi
 				fi
 			fi
-			battleFound=$(WaitFor "Battle" "" 20)
+			battleFound=$(WaitFor "Battle" "" 100)
 			if [ "$battleFound" = "n" ]
 			then
 				waitCount=1
