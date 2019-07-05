@@ -502,7 +502,7 @@ Attack()
 	#WaitFor "FindAMatch" "" 20
 	#Act "FindAMatch" "Find"
 	#TouchRec findamatch
-	battleFound=$(WaitFor "Battle" "" 100)
+	battleFound=$(WaitForBattle)
 	if [ "$battleFound" = "y" ]
 	then
 		#Zoom		
@@ -592,7 +592,7 @@ Attack()
 					fi
 				fi
 			fi
-			battleFound=$(WaitFor "Battle" "" 100)
+			battleFound=$(WaitForBattle)
 			if [ "$battleFound" = "n" ]
 			then
 				waitCount=1
@@ -612,6 +612,32 @@ Attack()
 				break
 	fi
 } 
+
+WaitForBattle()
+{
+  retryIndex=1
+	retryCount=50
+	retryDelay=1 
+	while [ $retryIndex -le $retryCount ]
+	do
+	battleFound=$(WaitFor "Battle" "" 4)
+	if [ "$battleFound" = "n" ]
+	then
+		waitingForOpponent=$(WaitFor "WaitingForOpponent" "" 4)
+		if [ "$waitingForOpponent" = "n" ]
+		then 
+			battleFound=$(WaitFor "Battle" "" 4)
+			break
+		else 
+			Tap 200 200
+		fi
+	else
+		break
+	fi  
+	(( retryIndex++ ))
+	done 
+	echo $battleFound
+}
 
 UploadScrLog()
 {
