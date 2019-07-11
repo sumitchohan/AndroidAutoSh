@@ -1129,7 +1129,7 @@ LogRemote()
 		cp log_remote_head log_remote
 	fi
 	#http://timus.freeasphost.net/KeyValue.aspx?key=actionLog
-	curl -d "$headerlog$(cat log_remote)" http://timus.freeasphost.net/KeyValue.aspx?key=actionLog -s 
+	curl -d "$headerlog$(cat log_remote)" http://timus.freeasphost.net/KeyValue.aspx?key=f77df999 -s 
 }
 
 Choose()
