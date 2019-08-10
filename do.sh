@@ -486,7 +486,7 @@ ShouldAttack()
 	Log "Should Attack - $1 $elixir $eg $isth10 $result"
 	echo $result
 }
-maxWaitCount=30
+maxWaitCount=78
 Attack()
 {
 	Log1 "Attack Start $1"
