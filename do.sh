@@ -486,7 +486,7 @@ ShouldAttack()
 	Log "Should Attack - $1 $elixir $eg $isth10 $result"
 	echo $result
 }
-maxWaitCount=78
+maxWaitCount=1
 Attack()
 {
 	Log1 "Attack Start $1"
@@ -795,9 +795,9 @@ QuickAttack()
 {
 	if [ "$1" = "2" ]
 	then
-		source quick_attack_2
+		source quick_attack_loose
 	else
-		source quick_attack_1
+		source quick_attack_1oose
 	fi
 }
 
