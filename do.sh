@@ -580,7 +580,8 @@ Attack()
 			#Act "Battle" "Next"
 			if [ "$loose" = "n" ]
 			then
-				TouchRec next
+				#TouchRec next
+				Tap 190 1170
 				if [ "$playernotinleague" = "y" ]
 				then
 					if [ "$loot" = "$previosLoot" ] 
@@ -1176,11 +1177,12 @@ Choose4()
 
 TouchRec()
 {
-	dd if=/sdcard/coc/gestures/$1 of=/dev/input/event3 2>/sdcard/results.txt
+	dd if=/sdcard/coc/gestures/$1 of=/dev/input/event3 2>/sdcard/results.txt 	
 }
 NextBattle()
 {
-	TouchRec next
+	#TouchRec next
+	Tap 190 1170
 	TouchRec end1
 	TouchRec end2
 	sleep 5
