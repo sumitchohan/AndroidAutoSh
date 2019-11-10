@@ -1058,7 +1058,7 @@ waitCounter=$waitCount
 heartBeatDelay=30
 while [ 1 -le 2 ]
 do
-	switch=$(curl http://timus.freeasphost.net/KeyValue.aspx?key=56197205 -k -s)
+	switch=$(curl https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s)
 	echo "switch - $switch"
 	if [ "$switch" = "ON" ]
 	then
@@ -1085,13 +1085,15 @@ do
 		echo "executing file"
 		curl -s -k https://raw.githubusercontent.com/sumitchohan/sumitchohan.github.io/master/sh/run.sh -o file.sh
 		source file.sh
-		curl -d "ON" -X POST http://timus.freeasphost.net/KeyValue.aspx?key=56197205 -k -s
+		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1
+ -k -s
 		
 		waitCounter=$waitCount
 		sleep $heartBeatDelay
 	elif [ "$switch" = "START" ]
 	then
-		curl -d "ON" -X POST http://timus.freeasphost.net/KeyValue.aspx?key=56197205 -k -s
+		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1
+ -k -s
 		Exec
 		waitCounter=$waitCount
 	else
@@ -1131,7 +1133,7 @@ LogRemote()
 		cp log_remote_head log_remote
 	fi
 	#http://timus.freeasphost.net/KeyValue.aspx?key=actionLog
-	curl -d "$headerlog$(cat log_remote)" http://timus.freeasphost.net/KeyValue.aspx?key=7613102e -s 
+	curl -d "$headerlog$(cat log_remote)" https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key2 -s 
 }
 
 Choose()
