@@ -977,6 +977,17 @@ DeployRage2()
 	Tap 385 770 
 }
 
+DeployFreeze()
+{
+	Tap 255 632
+	Tap 385 770 
+	Tap 323 476
+	Tap 450 550
+	Tap 530 690
+	Tap 389 624
+
+}
+
 
 DeployTL()
 {
