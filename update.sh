@@ -9,3 +9,4 @@ curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/qu
 curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/scr.conf -o scr.conf
 curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/util.sh -o util.sh 
 source do.sh
+Start

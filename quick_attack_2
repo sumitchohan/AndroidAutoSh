@@ -22,6 +22,7 @@ TouchRec choose6
 DeployTLRB
 DeployTLRB
 TouchRec choose1
+sleep 15
 TouchRec choose7
 DeployFreeze
 TouchRec choose1
@@ -52,6 +53,7 @@ TouchRec choose6
 DeployTLRB
 DeployTLRB
 TouchRec choose1
+sleep 15
 TouchRec choose7
 DeployFreeze
 TouchRec choose1
