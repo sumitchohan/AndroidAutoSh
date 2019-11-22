@@ -1096,15 +1096,13 @@ do
 		echo "executing file"
 		curl -s -k https://raw.githubusercontent.com/sumitchohan/sumitchohan.github.io/master/sh/run.sh -o file.sh
 		source file.sh
-		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1
- -k -s
+		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s
 		
 		waitCounter=$waitCount
 		sleep $heartBeatDelay
 	elif [ "$switch" = "START" ]
 	then
-		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1
- -k -s
+		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s
 		Exec
 		waitCounter=$waitCount
 	else
@@ -1144,7 +1142,7 @@ LogRemote()
 		cp log_remote_head log_remote
 	fi
 	#http://timus.freeasphost.net/KeyValue.aspx?key=actionLog
-	curl -d "$headerlog$(cat log_remote)" https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key2 -s 
+	curl -d "$headerlog$(cat log_remote)" https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key2 -k -s 
 }
 
 Choose()
