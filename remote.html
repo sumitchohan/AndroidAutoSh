@@ -65,7 +65,8 @@
                     <td>
                         <button ng-click="runFile()" class="button" style="width: 100%">FILE</button>
                     </td>
-                    <td></td>
+                    <td>
+                        <button ng-click="nox()" class="button" style="width: 100%">NOX</button></td>
                 </tr>
 
             </table>
@@ -109,6 +110,9 @@
             }
             $scope.reset = function() {
                 setSwitch('START');
+            }
+            $scope.nox = function() {
+                setSwitch('NOX');
             }
             $scope.off = function() {
                 setSwitch('STOPPED');
