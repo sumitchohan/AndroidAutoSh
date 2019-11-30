@@ -1105,6 +1105,15 @@ do
 		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s
 		Exec
 		waitCounter=$waitCount
+	elif [ "$switch" = "NOX" ]
+	then
+		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s 
+		if [ "$waitCount" = "10" ] 
+		then
+			waitCounter=72
+		else
+			waitCounter=10
+		fi
 	else
 		sleep $heartBeatDelay
 	fi
