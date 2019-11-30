@@ -1108,11 +1108,11 @@ do
 	elif [ "$switch" = "NOX" ]
 	then
 		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s 
-		if [ "$waitCount" = "10" ] 
+		if [ "$waitCount" = "2" ] 
 		then
 			waitCounter=72
 		else
-			waitCounter=10
+			waitCounter=2
 		fi
 	else
 		sleep $heartBeatDelay
