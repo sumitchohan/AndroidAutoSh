@@ -452,7 +452,7 @@ ShouldAttack()
 		#	result="y"
 		#fi
 	else
-		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "6000" ]
+		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "600000" ]
 		then
 			result="y"
 		fi 
@@ -473,11 +473,7 @@ ShouldAttack()
 			result="y"
 		fi
 	else
-		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "7000" ]
-		then
-			result="y"
-		fi 
-		if  [ "$de" -ge "7000" ]
+		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "600000" ] 
 		then
 			result="y"
 		fi 
