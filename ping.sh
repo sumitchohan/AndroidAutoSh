@@ -15,7 +15,6 @@ then
     curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/util.sh -o util.sh 
     source do.sh
     Start
-
     curl -d "ping at $dt" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key3 -k -s 
 else
 	dt=$(date +%H_%M_%S)
