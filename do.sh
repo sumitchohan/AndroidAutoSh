@@ -1249,3 +1249,83 @@ DeployRageSpell2()
 	TouchRec s4
 	TouchRec s5 
 }
+choose_1()
+{
+	Tap 55 215
+}
+choose_2()
+{
+	Tap 55 320
+}
+choose_3()
+{
+	Tap 55 420
+}
+choose_4()
+{
+	Tap 55 510
+}
+choose_5()
+{
+	Tap 55 600
+}
+choose_6()
+{
+	Tap 55 690
+}
+choose_7()
+{
+	Tap 55 880
+}
+choose_8()
+{
+	Tap 55 970
+}
+choose_9()
+{
+	Tap 55 1060
+}
+choose_10()
+{
+	Tap 55 1150
+}
+screen_up()
+{
+	input swipe 600 600 600 100 300
+}
+screen_down()
+{
+	input swipe 600 100 600 600 300
+}
+c_l()
+{
+	Tap 330 140
+}
+c_lt()
+{
+	Tap 586 460
+}
+c_t()
+{
+	Tap 728 655
+}
+c_rt()
+{
+	Tap 588 865
+}
+c_r()
+{
+	Tap 340 1188
+}
+c_b()
+{
+	Tap 154 660
+}
+c_bl()
+{
+	Tap 358 368
+}
+c_br()
+{
+	Tap 378 967
+}
