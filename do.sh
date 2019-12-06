@@ -452,7 +452,7 @@ ShouldAttack()
 		#	result="y"
 		#fi
 	else
-		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "6000" ]
+		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "600000" ]
 		then
 			result="y"
 		fi 
@@ -473,11 +473,7 @@ ShouldAttack()
 			result="y"
 		fi
 	else
-		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "7000" ]
-		then
-			result="y"
-		fi 
-		if  [ "$de" -ge "7000" ]
+		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "600000" ] 
 		then
 			result="y"
 		fi 
@@ -1105,6 +1101,15 @@ do
 		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s
 		Exec
 		waitCounter=$waitCount
+	elif [ "$switch" = "NOX" ]
+	then
+		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s 
+		if [ "$waitCount" = "2" ] 
+		then
+			waitCounter=72
+		else
+			waitCounter=2
+		fi
 	else
 		sleep $heartBeatDelay
 	fi
