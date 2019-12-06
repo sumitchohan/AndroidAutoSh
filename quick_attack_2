@@ -1,62 +1,47 @@
-TouchRec choose1
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose2
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose3
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose4
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose5
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose6
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-sleep 15
-TouchRec choose7
+screen_up
+choose_1
+c_b
+c_bl
+c_br
+choose_2
+c_b
+c_bl
+c_br
+screen_down
+choose_1
+c_t
+c_lt
+c_rt
+c_l
+c_r
+choose_2
+c_t
+c_lt
+c_rt
+c_l
+c_r
+choose_3
+c_t
+choose_4
+c_t
+choose_5
+c_t
+choose_6
+c_t
+choose_4
+choose_5
+choose_6
+choose_8
+c_t
+c_lt
+c_rt
+c_l
+c_r
+c_t
+c_lt
+c_rt
+c_l
+c_r
+choose_7
 DeployFreeze
-TouchRec choose1
-TouchRec choose8
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose2
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose3
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose4
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose5
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-TouchRec choose6
-DeployTLRB
-DeployTLRB
-TouchRec choose1
-sleep 15
-TouchRec choose7
-DeployFreeze
-TouchRec choose1
-TouchRec choose8
-DeployTLRB
-DeployTLRB
+
