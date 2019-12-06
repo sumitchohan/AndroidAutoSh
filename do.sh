@@ -1275,19 +1275,19 @@ choose_6()
 }
 choose_7()
 {
-	Tap 55 880
+	Tap 55 780
 }
 choose_8()
 {
-	Tap 55 970
+	Tap 55 870
 }
 choose_9()
 {
-	Tap 55 1060
+	Tap 55 960
 }
 choose_10()
 {
-	Tap 55 1150
+	Tap 55 1050
 }
 screen_up()
 {
