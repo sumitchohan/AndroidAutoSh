@@ -1118,11 +1118,11 @@ done
 
 Start()
 {
-	StartThread &
-	tid=$!
 	echo "">> thread_info
 	source thread_info
 	echo ""> thread_info
+	StartThread &
+	tid=$!
 	echo "kill $tid">>thread_info
 }
 Exec()
