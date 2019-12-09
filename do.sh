@@ -353,7 +353,7 @@ Read()
     Tap 625 1180
 		WaitForFile /sdcard/coc/doneflag
 		LogRemote "Read End - $1"
-		am start -n com.supercell.clashofclans/.GameApp
+		am start -n com.supercell.clashofclans/com.supercell.titan.GameApp
 		sleep 2
 		#am force-stop com.example.sumitchohan.utilityapp 
 }
@@ -388,9 +388,9 @@ StartCOC()
 	if [ "$isCOC" = "" ]
 	then
 		Log "no coc"
-		am start -n com.supercell.clashofclans/.GameApp
+		am start -n com.supercell.clashofclans/com.supercell.titan.GameApp
 		sleep 10
-		am start -n com.supercell.clashofclans/.GameApp
+		am start -n com.supercell.clashofclans/com.supercell.titan.GameApp
 		sleep 10 
 	else
 		Log "coc"
