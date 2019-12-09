@@ -482,7 +482,7 @@ ShouldAttack()
 	Log "Should Attack - $1 $elixir $eg $isth10 $result"
 	echo $result
 }
-maxWaitCount=72
+maxWaitCount=30
 Attack()
 {
 	Log1 "Attack Start $1"
@@ -1104,11 +1104,11 @@ do
 	elif [ "$switch" = "NOX" ]
 	then
 		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s 
-		if [ "$waitCount" = "2" ] 
+		if [ "$waitCount" = "5" ] 
 		then
-			waitCounter=72
+			waitCount=30
 		else
-			waitCounter=2
+			waitCount=5
 		fi
 	else
 		sleep $heartBeatDelay
