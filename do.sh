@@ -388,6 +388,7 @@ StartCOC()
 	if [ "$isCOC" = "" ]
 	then
 		Log "no coc"
+		#get list of activity   pm dump com.supercell.clashofclans |  grep -A 1 MAIN
 		am start -n com.supercell.clashofclans/com.supercell.titan.GameApp
 		sleep 10
 		am start -n com.supercell.clashofclans/com.supercell.titan.GameApp
