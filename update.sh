@@ -9,6 +9,6 @@ curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/qu
 curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/scr.conf -o scr.conf
 curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/util.sh -o util.sh 
 curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/daemon.sh -o daemon.sh 
-curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/daemon.sh -o update.sh 
+curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/ping.sh -o ping.sh 
 source do.sh
 Start
