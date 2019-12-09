@@ -14,7 +14,7 @@ c_r
 choose_2
 c_rt
 c_r
-sleep 60
+sleep 35
 choose_1
 c_t
 c_lt
