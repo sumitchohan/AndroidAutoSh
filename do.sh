@@ -1097,6 +1097,12 @@ do
 		
 		waitCounter=$waitCount
 		sleep $heartBeatDelay
+	elif [ "$switch" = "LOOSE" ]
+	then
+		LooseTen
+		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s		
+		waitCounter=$waitCount
+		sleep $heartBeatDelay
 	elif [ "$switch" = "START" ]
 	then
 		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s
@@ -1329,4 +1335,33 @@ c_bl()
 c_br()
 {
 	Tap 378 967
+}
+LooseTen()
+{
+	failedCount=0
+	LogRemote "$1_Starting - Losse"
+	Log1 "Starting Losse.. $1"  
+	Init
+	StopCOC
+	#am start -n com.x0.strai.frep/.FingerActivity
+	StartCOC	
+	Log1 "Trying Home"
+	Home 
+	TouchRec attack
+	sleep .5
+	Tap 150 250
+	sleep .5
+	Tap 350 950
+	sleep .5 
+	battleFound=$(WaitForBattle)
+	if [ "$battleFound" = "y" ]
+	then
+		LogRemote "$1_Battle found." 
+		Zoom
+		choose_1
+		c_t
+	else 
+		LogRemote "$1_Battle not found. Break" 
+	fi
+	LogRemote "$1_Loose Done"
 }
