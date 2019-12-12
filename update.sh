@@ -11,5 +11,7 @@ curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/ut
 curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/daemon.sh -o daemon.sh 
 curl -s -k https://raw.githubusercontent.com/sumitchohan/AndroidAutoSh/master/ping.sh -o ping.sh 
 source do.sh
+
+		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s
 StartThread
 #Start
