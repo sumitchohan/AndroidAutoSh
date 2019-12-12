@@ -927,7 +927,9 @@ do
 		sleep $heartBeatDelay
 	elif [ "$switch" = "LOOSE" ]
 	then
-		LooseTen
+		shouldLoose="y"
+		Exec
+		shouldLoose="n"
 		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s		
 		waitCounter=$waitCount
 		sleep $heartBeatDelay
