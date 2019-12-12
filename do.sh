@@ -389,7 +389,7 @@ ShouldAttack()
 maxWaitCount=30
 Attack()
 {
-	Log1 "Attack Start $1"
+	Log1 "Attack Start"
 	previosLoot="";
 
 	am force-stop com.example.sumitchohan.utilityapp
@@ -406,11 +406,11 @@ Attack()
 	if [ "$battleFound" = "y" ]
 	then
 		#Zoom		
-		Log1 "Battle Found $1"
+		Log1 "Battle Found"
 		attacked="n"
 		while [ "$attacked" = "n" ]
 		do
-			Log1 "Reading Battle $1"
+			Log1 "Reading Battle"
 			if [ $(MatchPixel 774 33 93 95 97 100) = "y" ] && [ $(MatchPixel 774 35 93 95 97 100) = "y" ] 
 			then
 				echo "player not in league"
@@ -442,9 +442,9 @@ Attack()
 				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10, playernotinleague- $playernotinleague"
 			fi
 			#SendMessage "snapshot.sh"
-			shouldAttack=$(ShouldAttack $1)
-			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
-			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" 
+			shouldAttack=$(ShouldAttack)
+			echo "ShouldAttack $shouldAttack $th10 $elixir $gold"
+			LogRemote "ShouldAttack $shouldAttack $elixir $gold $de" 
 			loot="$elixir$gold$de" 
 			if [ "$shouldAttack" = "y" ] 
 			then
@@ -452,7 +452,7 @@ Attack()
 				Zoom 
 				echo "ready to attack"
 				LogRemote "Attacking"
-				QuickAttack $1
+				QuickAttack
 				LogRemote "Attack done!"
 				waitCount=$maxWaitCount
 				break
@@ -961,11 +961,9 @@ Start()
 	echo "kill $tid">>thread_info
 }
 Exec()
-{
-	#LogRemote "exec-running 1"
-	#Run 1
-	LogRemote "exec-running 2"
-	Run 2
+{ 
+	LogRemote "exec-running"
+	Run
 }
 
 
