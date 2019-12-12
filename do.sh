@@ -709,20 +709,23 @@ Run()
 		TouchRec train1
 		TouchRec menuclose
 		Attack 
-		sleep 60
-		StopCOC
-		Home
-		Zoom 
-		Tap 180 50
-		sleep 0.5
-		Tap 697 997
-		sleep 0.5
-		Tap 410 1085
-        Tap 700 800
-        Tap 300 250
-		Tap 700 1130
-		sleep 1
-		StopCOC 
+		if [ "$shouldLoose" = "n" ]
+		then
+			sleep 1
+			StopCOC
+			Home
+			Zoom 
+			Tap 180 50
+			sleep 0.5
+			Tap 697 997
+			sleep 0.5
+			Tap 410 1085
+			Tap 700 800
+			Tap 300 250
+			Tap 700 1130
+			sleep 1
+			StopCOC 
+		fi
 	else
 		echo "not ready"	
 		LogRemote "Not Ready  .."	
