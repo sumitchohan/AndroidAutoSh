@@ -927,7 +927,8 @@ do
 		sleep $heartBeatDelay
 	elif [ "$switch" = "LOOSE" ]
 	then
-		shouldLoose="y"
+		shouldLoose="y"		
+		LogRemote "exec-Loose"
 		Exec
 		shouldLoose="n"
 		curl -d "ON" -X POST https://kvdb.io/Y7SPweN4icfQxaCSmuJAuu/key1 -k -s		
