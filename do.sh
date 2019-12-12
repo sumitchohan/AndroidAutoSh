@@ -283,50 +283,6 @@ Hello()
 	echo "Hello $1"
 } 
 
-Loose()
-{
-	Home	
-	Zoom
-	Read "Home"
-	trophy=$(cat ocred_Trophy.txt)
-	maxTrophyCount=4300
-	if [ "$1" = "1" ]
-	then
-		maxTrophyCount=2600
-	else
-		maxTrophyCount=4300
-	fi
-	echo "trophy -$trophy maxTrophyCount -  $maxTrophyCount"
-	if [ "$trophy" -ge "$maxTrophyCount" ] 
-	then
-		echo "Loosing.."
-		Tap 40 520
-		sleep 0.1
-		#ready=$(MatchPixel 551 296 64 117 09 100)
-		ready="y"
-		Tap 768 92
-		sleep .5
-		if [ "$ready" = "y" ]
-		then		
-			Act "Home" "Attack"
-			sleep .5
-			Tap 230 460 
-			WaitFor "Battle" "" 120	
-			SendMessage "loose"
-			sleep .5
-			Tap 66 530
-			sleep 1
-			Tap 494 416
-			sleep 1
-			Tap 396 540
-			Loose $1
-		else
-			echo "not ready"
-		fi
-	fi
-}
-
-
 WaitForFile()
 { 
 	timeOut=60
@@ -402,23 +358,6 @@ StopCOC()
 	am force-stop com.supercell.clashofclans
 	sleep 1
 } 
-
-LooseTrophies()
-{
-	trophy=$1
-	if [ "$trophy" -ge "700" ]
-	then
-		Log "trophy $trophy ; loosing.."
-		Loose
-		WaitFor "Home" "Attacked,ConnectionLost,VersusHome,ReturnHome" 60
-		#Read "Home"
-		trophy=$(cat ocred_Trophy.txt)
-		de=$(cat ocred_DE.txt)
-		elixir=$(cat ocred_Elixir.txt)
-		gems=$(cat ocred_Gems.txt)
-		LooseTrophies $trophy
-	fi
-}
 Home()
 {
 	StartCOC
@@ -437,50 +376,14 @@ Home()
 	fi	
 } 
  
+
 ShouldAttack()
 {
 	result="n"
-	if [ "$playernotinleague" = "y" ]
+	if [ "$shouldLoose" = "y" ] || [ "$elixir" -ge "400000" ] || [ "$eg" -ge "1000000" ]
 	then
-	if [ "$1" = "1" ]
-	then
-		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "6000" ]
-		then
-			result="y"
-		fi 
-		#if  [ "$elixir" -ge "900000" ] || [ "$eg" -ge "1800000" ] || [ "$de" -ge "7000" ]
-		#then 
-		#	result="y"
-		#fi
-	else
-		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "1000000" ]
-		then
-			result="y"
-		fi 
-		#if  [ "$de" -ge "5500" ]
-		#then
-		#	result="y"
-		#fi 
+		result="y"
 	fi 
-	else
-	if [ "$1" = "1" ]
-	then
-		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "700000" ] || [ "$de" -ge "6000" ]
-		then
-			result="y"
-		fi 
-		if  [ "$elixir" -ge "900000" ] || [ "$eg" -ge "1800000" ] || [ "$de" -ge "7000" ]
-		then 
-			result="y"
-		fi
-	else
-		if  [ "$elixir" -ge "400000" ] || [ "$eg" -ge "800000" ] 
-		then
-			result="y"
-		fi 
-	fi 
-	fi
-	Log "Should Attack - $1 $elixir $eg $isth10 $result"
 	echo $result
 }
 maxWaitCount=30
@@ -543,7 +446,6 @@ Attack()
 			echo "ShouldAttack $shouldAttack $1 $th10 $elixir $gold"
 			LogRemote "ShouldAttack $shouldAttack $1 $elixir $gold $de" 
 			loot="$elixir$gold$de" 
-			loose="n"
 			if [ "$shouldAttack" = "y" ] 
 			then
 				Zoom
@@ -554,47 +456,14 @@ Attack()
 				LogRemote "Attack done!"
 				waitCount=$maxWaitCount
 				break
-			else
-				if [ "$shouldLoose" = "y" ]
-				echo "looseCount - $looseCount"
-				then
-					if [ "$looseCount" -gt "0" ]
-					then
-						Zoom
-						Zoom
-						echo "loosing"
-						LooseAttack
-						(( looseCount-- ))
-						loose="y"
-						Tap 80 50
-						sleep .5 
-						Tap 178 257
-					fi
-				fi
 			fi 
 			Log "not attacking"
 			echo "not attacking"
-			#Act "Battle" "Next"
-			if [ "$loose" = "n" ]
-			then
-				#TouchRec next
-				Tap 190 1170
-				if [ "$playernotinleague" = "y" ]
-				then
-					if [ "$loot" = "$previosLoot" ] 
-					then
-						LogRemote "same as previous loot"
-						NextBattle
-					else
-						previosLoot=$loot
-					fi
-				fi
-			fi
 			battleFound=$(WaitForBattle)
 			if [ "$battleFound" = "n" ]
 			then
 				waitCount=1
-				LogRemote "$1_Battle not found. Break"
+				LogRemote "Battle not found. Break"
 				UploadScrLog
 				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
 				break
@@ -604,10 +473,10 @@ Attack()
 		done
 	else
 		waitCount=1
-		LogRemote "$1_Battle not found. Break"
+		LogRemote "Battle not found. Break"
 		UploadScrLog
-				#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
-				break
+		#curl -p --insecure  "ftp://ftp.chauhansumit.5gbfree.com/" --user "user@chauhansumit.5gbfree.com:Password123" -T "$fileName" --ftp-create-dirs
+		break
 	fi
 } 
 
@@ -655,18 +524,6 @@ curl -X POST https://content.dropboxapi.com/2/files/upload --header "Authorizati
 }
 
 
-
-LooseAttack()
-{
-	Tap 65 220
-Touch tl_0
-Tap 169 85
-Tap 320 750
-Tap 135 640
-
-	
-
-}
 AddTs()
 {
 while read data; do
@@ -748,13 +605,18 @@ MatchPixel() #x y r g b delta
 }
 IsReadyForAttack()
 {
-	Dump	
-    #if [ $(MatchPixel 631 143 64 116 09 100) = "y" ] #&& [ $(MatchPixel 551 296 64 117 09 100) = "y" ]
-    if [ $(MatchPixel 640 721 232 232 224 50) = "y" ] #&& [ $(MatchPixel 551 296 64 117 09 100) = "y" ]
-    then		
+	if [ "$shouldLoose" = "y" ]
+	then
 		echo "y"
 	else 
-		echo "n"
+		Dump	
+    	#if [ $(MatchPixel 631 143 64 116 09 100) = "y" ] #&& [ $(MatchPixel 551 296 64 117 09 100) = "y" ]
+    	if [ $(MatchPixel 640 721 232 232 224 50) = "y" ] #&& [ $(MatchPixel 551 296 64 117 09 100) = "y" ]
+    	then		
+			echo "y"
+		else 
+			echo "n"
+		fi
 	fi
 }
 Donate()
@@ -791,35 +653,16 @@ Donate()
  
 QuickAttack()
 {
-	if [ "$1" = "2" ]
+	if [ "$shouldLoose" = "y" ]
 	then
-		source quick_attack_2
+		choose_1
+		c_t
 	else
 		source quick_attack_2
 	fi
 }
 
-SwitchID()
-{
-    Log1 "ID switching to $1"
-    Tap 190 1240 
-    sleep 1
-	Tap 200 750 
-    sleep 10
-    Tap 500 970
-    sleep 1
-    Tap 296 792
-	sleep 10
-	Tap 60 440  
-    sleep 10
-	if [ "$1" = "1" ]
-	then
-		Tap 340 560 #ID1
-	else
-		Tap 440 560 #ID2
-	fi
-	WaitFor "Home" "" 10 
-} 
+
 maxTrophy=7000
 shouldLoose="n"
 looseCount=0
@@ -827,10 +670,8 @@ failedCount=0
 Run()
 {
 	failedCount=0
-	LogRemote "$1_Starting"
-	Log1 "Starting Run.. $1" 
-	shouldLoose="n"
-	looseCount=0
+	LogRemote "Starting"
+	Log1 "Starting Run.." 
 	Init
 	StopCOC
 	#am start -n com.x0.strai.frep/.FingerActivity
@@ -851,28 +692,15 @@ Run()
 	#	gems=$(cat ocred_Gems.txt)
 
 	#LogRemote "T - $trophy G - $gold E - $elixir D - $de"
-
-	if [ "$trophy" -gt "$maxTrophy" ]
-	then
-		shouldLoose="y"
-		looseCount=6
-	fi
-
+ 
 
 	LogRemote "trophy - $trophy maxTrophy - $maxTrophy shouldLoose-$shouldLoose looseCount-$looseCount"
-	#SwitchID $1 
-	#Loose $1
-	#quickTrainYPos=805
-	#if [ "$1" = "2" ]
-	#then
-	#	quickTrainYPos=997
-	#fi
 	TouchRec menu
 	sleep 0.5
-	Log1 "IsReadyForAttack $1 .. taking snapshot"	
+	Log1 "IsReadyForAttack  .. taking snapshot"	
 	#SendMessage "snapshot.sh"
 	ready=$(IsReadyForAttack)	
-	LogRemote "$1_Ready - $ready"
+	LogRemote "Ready - $ready"
 	if [ "$ready" = "y" ]
 	then
 		#Tap 697 $quickTrainYPos
@@ -880,7 +708,7 @@ Run()
 		sleep 0.5
 		TouchRec train1
 		TouchRec menuclose
-		Attack $1
+		Attack 
 		sleep 60
 		StopCOC
 		Home
@@ -897,7 +725,7 @@ Run()
 		StopCOC 
 	else
 		echo "not ready"	
-		LogRemote "Not Ready $1 .."	
+		LogRemote "Not Ready  .."	
 		waitCount=$maxWaitCount
 		TouchRec quicktrain
 		sleep 0.5
@@ -917,7 +745,7 @@ Run()
 
 		StopCOC
 	fi
-	LogRemote "$1_Done"
+	LogRemote "Done"
 
 	 
 }
@@ -1335,33 +1163,4 @@ c_bl()
 c_br()
 {
 	Tap 378 967
-}
-LooseTen()
-{
-	failedCount=0
-	LogRemote "$1_Starting - Losse"
-	Log1 "Starting Losse.. $1"  
-	Init
-	StopCOC
-	#am start -n com.x0.strai.frep/.FingerActivity
-	StartCOC	
-	Log1 "Trying Home"
-	Home 
-	TouchRec attack
-	sleep .5
-	Tap 150 250
-	sleep .5
-	Tap 350 950
-	sleep .5 
-	battleFound=$(WaitForBattle)
-	if [ "$battleFound" = "y" ]
-	then
-		LogRemote "$1_Battle found." 
-		Zoom
-		choose_1
-		c_t
-	else 
-		LogRemote "$1_Battle not found. Break" 
-	fi
-	LogRemote "$1_Loose Done"
 }
