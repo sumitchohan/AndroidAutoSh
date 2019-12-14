@@ -68,6 +68,13 @@
                     <td>
                         <button ng-click="nox()" class="button" style="width: 100%">NOX</button></td>
                 </tr>
+                <tr>
+                    <td>
+                        <button ng-click="loose()" class="button" style="width: 100%">LOOSE</button>
+                    </td>
+                    <td>
+                        </td>
+                </tr>
 
             </table>
             <div>
@@ -113,6 +120,9 @@
             }
             $scope.nox = function() {
                 setSwitch('NOX');
+            }
+            $scope.loose = function() {
+                setSwitch('LOOSE');
             }
             $scope.off = function() {
                 setSwitch('STOPPED');

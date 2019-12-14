@@ -390,7 +390,7 @@ maxWaitCount=30
 Attack()
 {
 	Log1 "Attack Start"
-	previosLoot="";
+	previosLoot=""
 
 	am force-stop com.example.sumitchohan.utilityapp
 	TouchRec attack
@@ -411,35 +411,27 @@ Attack()
 		while [ "$attacked" = "n" ]
 		do
 			Log1 "Reading Battle"
-			if [ $(MatchPixel 774 33 93 95 97 100) = "y" ] && [ $(MatchPixel 774 35 93 95 97 100) = "y" ] 
+			
+			echo "player not in league"
+			Log1 "Player not in league"
+			playernotinleague="y"
+			Read "Battle"			
+			de=$(cat ocred_DE.txt)
+			elixir=$(cat ocred_Elixir.txt)
+			gold=$(cat ocred_Gold.txt) 
+			#win=$(cat ocred_Win.txt)
+			#loose=$(cat ocred_Loose.txt) 
+			th10="n"
+			eg=$((gold+elixir)) 			
+			loot="$elixir$gold$de" 
+			if [ "$previosLoot" = "$loot" ]
 			then
-				echo "player not in league"
-				Log1 "Player not in league"
-				playernotinleague="y"
-				Read "Battle"			
-				de=$(cat ocred_DE.txt)
-				elixir=$(cat ocred_Elixir.txt)
-				gold=$(cat ocred_Gold.txt) 
-				#win=$(cat ocred_Win.txt)
-				#loose=$(cat ocred_Loose.txt) 
-				th10="n"
-				eg=$((gold+elixir))
-				#isth10=$(echo $th10| cut -d'_' -f 1)
-				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10 , playernotinleague - $playernotinleague"
-			else				
-				echo "player in league"
-				Log1 "Player in league"
-				playernotinleague="n"
-				Read "Battle"			
-				de=$(cat ocred_DE.txt)
-				elixir=$(cat ocred_Elixir.txt)
-				gold=$(cat ocred_Gold.txt) 
-				#win=$(cat ocred_Win.txt)
-				#loose=$(cat ocred_Loose.txt) 
-				eg=$((gold+elixir)) 
-				th10="n"
-				isth10="n" 
-				Log1 "elixir - $elixir , gold - $gold , de - $de , th10 - $th10, playernotinleague- $playernotinleague"
+				waitCount=1				
+				LogRemote "Loot - $elixir $gold $de" 
+				LogRemote "loot is same exiting"
+				break
+			else
+				previosLoot=$loot
 			fi
 			#SendMessage "snapshot.sh"
 			shouldAttack=$(ShouldAttack)
