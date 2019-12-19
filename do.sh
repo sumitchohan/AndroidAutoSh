@@ -449,8 +449,7 @@ Attack()
 				waitCount=$maxWaitCount
 				break
 			fi 
-			Log "not attacking"
-			echo "not attacking"
+			Tap 200 1200
 			battleFound=$(WaitForBattle)
 			if [ "$battleFound" = "n" ]
 			then
