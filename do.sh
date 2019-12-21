@@ -969,6 +969,7 @@ do
 		else
 			waitCount=5
 		fi
+		waitCounter=$waitCount
 	else
 		sleep $heartBeatDelay
 	fi
