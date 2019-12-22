@@ -380,7 +380,7 @@ Home()
 ShouldAttack()
 {
 	result="n"
-	if [ "$shouldLoose" = "y" ] || [ "$de" -ge "5000" ] # [ "$elixir" -ge "400000" ] || [ "$eg" -ge "1000000" ]
+	if [ "$shouldLoose" = "y" ] || [ "$de" -ge "5000" ] || [ "$elixir" -ge "400000" ] #|| [ "$eg" -ge "1000000" ]
 	then
 		result="y"
 	fi 
@@ -966,8 +966,10 @@ do
 		if [ "$waitCount" = "5" ] 
 		then
 			waitCount=30
+			maxWaitCount=30
 		else
 			waitCount=5
+			maxWaitCount=5
 		fi
 		waitCounter=$waitCount
 	else
