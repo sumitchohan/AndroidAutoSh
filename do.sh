@@ -380,7 +380,7 @@ Home()
 ShouldAttack()
 {
 	result="n"
-	if [ "$shouldLoose" = "y" ] || [ "$de" -ge "6000" ] #|| [ "$elixir" -ge "400000" ] #|| [ "$eg" -ge "1000000" ]
+	if [ "$shouldLoose" = "y" ] || [ "$de" -ge "5000" ] || [ "$eg" -ge "1200000" ] #|| [ "$eg" -ge "1000000" ]
 	then
 		result="y"
 	fi 
